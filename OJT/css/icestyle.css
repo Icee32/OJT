@@ -1,0 +1,98 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background: #901c1c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+}
+
+h2 {
+    font-size: 36px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.box {
+    position: relative;
+    box-sizing: border-box;
+    border: 4px solid #A4040A;
+    /* Santa Rosa color for thicker border */
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    /* Adjust the maximum width */
+    width: 90%;
+    /* Adjust the width as a percentage or specific value */
+    height: auto;
+    /* Make height auto to fit content */
+    padding: 3vh 3vw;
+    /* Adjust padding as needed */
+    margin: 20vh auto 5vh;
+    /* Adjust margin for lower positioning */
+    margin-right: 20vh;
+    /* Softer yellow background with good contrast for black text */
+    background-color: rgba(255, 245, 204, 0.8);
+    /* Light yellow with transparency */
+    color: black;
+    /* Ensure black text color for readability */
+}
+
+.test {
+    border-top: 2px solid black;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+.error {
+    background: #F2DEDE;
+    color: #A94442;
+    padding: 10px;
+    width: 95%;
+    border-radius: 5px;
+    margin: 20px auto;
+}
+
+a {
+    float: right;
+    background: #555;
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: none;
+    text-decoration: none;
+}
+
+a:hover {
+    opacity: .7;
+}
+
+button {
+    float: right;
+    background: #555;
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: none;
+}
