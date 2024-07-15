@@ -1,0 +1,410 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(#1cbdb4, #3e0a29);
+  justify-content: center;
+}
+
+svg {
+  width: 25px;
+}
+
+nav {
+  background-color: #1cbdb4;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.yunglogo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-right: 130vh !important;
+}
+
+nav ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+nav li {
+  height: 50px;
+}
+
+nav a {
+  height: 100%;
+  padding: 0 30px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+}
+
+nav a:hover {
+  background-color: #3e0a29;
+  border-radius: 30px;
+}
+nav li:first-child {
+  margin-right: auto;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 250px;
+  z-index: 999;
+  background-color: #3e0a29;
+  backdrop-filter: blur(10px);
+  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.sidebar li {
+  width: 100%;
+}
+
+.sidebar a {
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .hideOnMobile {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+
+section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to top, #3e0a29, transparent);
+  z-index: 1000;
+}
+
+section img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+section img#moon {
+  mix-blend-mode: screen;
+}
+
+section img#mountains_front {
+  z-index: 10;
+}
+
+#text {
+  position: absolute;
+  right: -350px;
+  color: #fff;
+  white-space: nowrap;
+  font-size: 7.5vw;
+  z-index: 9;
+}
+
+#btn {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 30px;
+  border-radius: 40px;
+  background: #fff;
+  color: #0f2d37;
+  font-size: 1.5em;
+  z-index: 9;
+  transform: translateY(100px);
+}
+
+.sec {
+  position: relative;
+  padding: 100px;
+  background: #3e0a29;
+}
+
+.sec h2 {
+  font-size: 3.5em;
+  margin-bottom: 10px;
+  color: #fff;
+  text-align: center;
+}
+
+.sec .Miniann p {
+  text-align: center;
+}
+
+.sec p {
+  font-size: 1.2em;
+  color: #fff;
+}
+
+/*slider*/
+.slider {
+  height: 100vh;
+  margin-top: 100px;
+  position: relative;
+}
+
+.slider .list .item {
+  position: absolute;
+  inset: 0 0 0 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: 0.5s;
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+}
+
+.slider .list .item img {
+  width: 1050px;
+  height: 600px;
+  object-fit: cover;
+}
+
+.slider .list .item .content {
+  position: absolute;
+  top: 65%;
+  width: 500px;
+  max-width: 80%;
+  z-index: 1000;
+  left: 415px;
+}
+
+.slider .list .item .content p:nth-child(1) {
+  text-transform: uppercase;
+  letter-spacing: 10px;
+}
+
+.slider .list .item .content h2 {
+  font-size: 100px;
+  margin: 0;
+}
+
+.slider .list .item.active {
+  opacity: 1;
+  z-index: 10;
+}
+
+@keyframes showContent {
+  to {
+    transform: translateY(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+.slider .list .item.active p:nth-child(1),
+.slider .list .item.active h2,
+.slider .list .item.active p:nth-child(3) {
+  transform: translateY(30px);
+  filter: blur(20px);
+  opacity: 0;
+  animation: showContent 0.5s 0.7s ease-in-out 1 forwards;
+}
+
+.slider .list .item.active h2 {
+  animation-delay: 1s;
+}
+
+.slider .list .item.active p:nth-child(3) {
+  animation-duration: 1.3s;
+}
+
+.arrows {
+  position: absolute;
+  top: 70%;
+  right: 500px;
+  z-index: 1111;
+}
+
+.arrows button {
+  background-color: #eee5;
+  border: none;
+  font-family: monospace;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: x-large;
+  color: #eee;
+  transition: 0.5s;
+}
+
+.arrows button:hover {
+  background-color: #eee;
+  color: black;
+}
+
+.thumbnail {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 11;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  height: 250px;
+  padding: 0 50px;
+  box-sizing: border-box;
+  overflow: auto;
+  justify-content: center;
+}
+
+.thumbnail::-webkit-scrollbar {
+  width: 0;
+}
+
+.thumbnail .item {
+  width: 400px;
+  height: 220px;
+  filter: brightness(0.5);
+  transition: 0.5s;
+  flex-shrink: 0;
+}
+.thumbnail .item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.thumbnail .item.active {
+  filter: brightness(1.5);
+}
+
+.thumbnail .item .content {
+  position: absolute;
+  inset: auto 10px 10px 10px;
+}
+
+@media screen and (max-width: 678px) {
+  .thumbnail {
+    justify-content: start;
+  }
+  .slider .list .item .content h2 {
+    font-size: 60px;
+  }
+  .arrows {
+    top: 10%;
+  }
+}
+
+/* Vaccination Info */
+
+:root {
+  --image-width: 20%; /* Adjust the image width here */
+  --image-height: auto; /* Adjust the image height here */
+}
+
+/*.vaccination-info {
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 100px;
+  box-sizing: border-box;
+  position: relative;
+  background: rgb(35, 126, 171);
+}*/ 
+
+.vaccination-info {
+  padding: 20px !important;
+  text-align: center !important;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 100px;
+  box-sizing: border-box;
+  position: relative;
+  background: rgb(35, 126, 171);
+}
+
+.vaccination-info h1 {
+  font-size: 2em !important;
+  margin-bottom: 20px !important;
+  text-align: center !important;
+}
+
+.vaccination-info .vaccine {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 30% !important;
+  margin: 0 1.5% !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  padding: 20px !important;
+  border-radius: 8px !important;
+  background-color: #f9f9f9 !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
+
+.vaccination-info .vaccine img {
+  width: var(--image-width) !important;
+  height: var(--image-height) !important;
+  border-radius: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+.vaccination-info .vaccine h2 {
+  font-size: 1.5em !important;
+  margin: 10px 0 !important;
+}
+
+.vaccination-info .vaccine p {
+  font-size: 1em !important;
+  color: #333 !important;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .vaccination-info .vaccine {
+    width: 45% !important;
+    margin: 2.5% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .vaccination-info .vaccine {
+    width: 100% !important;
+    margin: 10px 0 !important;
+  }
+}

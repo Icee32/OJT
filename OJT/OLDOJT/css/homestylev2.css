@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body{
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(#A4040A, #fff);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    height: 4rem;
+    padding: 0 1rem;
+    margin: 0 auto;
+    z-index: 999;
+}
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 100px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #A4040A;
+    align-items: center;
+    z-index: 10000;
+}
+
+.toggle_menu,
+.close_menu{
+    display: none;
+}
+
+.nav_list{
+    display:flex
+}
+
+.nav_link{
+    font-weight: 500;
+    color: #fff;
+}
+
+.nav_link:hover{
+    color: #A4040A;
+}
+
+.dropdown_link{
+    display: flex;
+    align-items: center;
+}
+
+.dropdown_icon{
+    font-size: 1.3rem;
+}
+
+header .logo{
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+header ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header ul li{
+    list-style: none;
+    margin-left: 20px;
+}
+
+header ul li a{
+    text-decoration: none;
+    padding: 6px 15px;
+    color: #fff;
+    border-radius: 20px;
+}
+
+header ul li a:hover,
+header ul li a.active
+{
+    background: #fff;
+    color: #A4040A;
+}
+
+section{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+section::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to top, #A4040A,transparent);
+    z-index: 1000;
+}
+
+section img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+section img#moon{
+    mix-blend-mode: screen;
+}
+
+section img#mountains_front{
+    z-index: 10;
+}
+
+#text{
+    position: absolute;
+    right: -350px;
+    color: #fff;
+    white-space: nowrap;
+    font-size: 7.5vw;
+    z-index: 9;
+}
+
+#btn{
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 30px;
+    border-radius: 40px;
+    background: #fff;
+    color: #0f2d37;
+    font-size: 1.5em;
+    z-index: 9  ;
+    transform: translateY(100px);
+}
+
+#mountains_front {
+    width: 1500px;  /* Adjust the desired width here */
+    height: 1500px; /* Adjust the desired height here */
+    position: relative;
+    top: -200px; /* Adjust the number of pixels to move up */
+  }
+
+.sec{
+    position: relative;
+    padding: 100px;
+    background: #A4040A;
+}
+
+.sec h2{
+    font-size: 3.5em;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.sec p{
+    font-size: 1.2em;
+    color: #fff;
+}

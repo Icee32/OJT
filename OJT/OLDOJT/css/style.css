@@ -1,0 +1,633 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Inter, Verdana, Tahoma, sans-serif;
+  }
+  
+  .app {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+
+.sidebar-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%; /* Creates a circular red box */
+  }
+
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 99px;
+    background-color: #3f6668;
+    cursor: pointer;
+}
+
+.hamburger {
+    position: relative;
+    top: calc(50% - 2px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+}
+
+.hamburger>span,
+.hamburger>span::before,
+.hamburger>span::after {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    border-radius: 99px;
+    background-color: #FFF;
+    transition-duration: .25s;
+}
+
+.hamburger>span::before {
+    content: '';
+    top: -8px;
+}
+
+.hamburger>span::after {
+    content: '';
+    top: 8px;
+}
+
+.menu-toggle.is-active .hamburger>span {
+    transform: rotate(45deg);
+}
+
+.menu-toggle.is-active .hamburger>span::before {
+    top: 0;
+    transform: rotate(0deg);
+}
+
+.menu-toggle.is-active .hamburger>span::after {
+    top: 0;
+    transform: rotate(90deg);
+}
+
+.sidebar {
+    flex: 1 1 0;
+    max-width: 200px;
+    padding: 2rem 1rem;
+    background-color: #A4040A;
+    z-index: 100;
+  }
+  
+  .sidebar a {
+    color: #185356;
+    font-size: 1rem;
+    margin-bottom: 0.5em;
+  }
+  
+  .sidebar .menu {
+    margin: 0 -1rem;
+  }
+
+.sidebar-header {
+    color: #ffffff; /* Text color for header elements */
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5em;
+    text-decoration: none;
+    padding: 1rem; /* Increased padding for header content */
+    position: relative; /* Needed for red box positioning */
+  }
+
+.sidebar-header hr {
+    margin: 0;
+    position: relative;
+    left: 16px;
+    width: calc(100% - 32px);
+    border: none;
+    border-top: solid 1px #A4040A;
+}
+
+.sidebar-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5px;
+    transition: opacity 1s;
+}
+
+.sidebar .menu .menu-item {
+    display: block;
+    padding: 1em;
+    color: #ffffff;
+    text-decoration: none;
+    transition: 0.2s linear;
+}
+
+.menu-item .fas {
+    min-width: 3rem;
+    text-align: center;
+}
+
+.sidebar .menu .menu-item:hover,
+.sidebar .menu .menu-item.is-active {
+    color: #43ec98;
+    border-right: 5px solid #3bba9c;
+  }
+  
+  .sidebar .menu .menu-item:hover {
+    border-right: 5px solid #3bba9c;
+  }
+
+
+/* ------------- Profile ------------- */
+
+.profile {
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.profile h3 {
+    color: #104244;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.profile p {
+    color: #104244;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.profile .status::after {
+    content: "•";
+    font-size: 25px;
+    margin-left: 5px;
+    color: red;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.profile.occupied .status::after {
+    color: red;
+    /* Dot color for Occupied status */
+}
+
+.profile.available .status::after {
+    color: green;
+    /* Dot color for Available status */
+}
+
+
+/* ------------- Page contents ------------- */
+
+.content {
+    flex: 1 1 0;
+    padding: 2rem;
+}
+
+.content h1 {
+    color: #ffffff;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.content h3 {
+    color: #185356;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.link-header h1 {
+    color: #185356;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.link-header a {
+    color: #185356;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    text-decoration: none;
+}
+
+.link-header a:hover {
+    color: #298e46;
+    transition: 0.5s;
+}
+
+.box {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 17px;
+    border: 1px solid var(--185356, #185356);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin: 1rem;
+}
+
+.box h4,
+.box h5 {
+    color: #185356;
+    margin: 1rem;
+}
+
+.box p {
+    color: #707793;
+    margin: 1rem;
+}
+
+.line-1 {
+    border-left: 6px solid #638889;
+    margin: 1rem;
+}
+
+.line-2 {
+    border-left: 6px solid #9DBC98;
+    margin: 1rem;
+}
+
+.line-3 {
+    border-left: 6px solid #EBD9B4;
+    margin: 1rem;
+}
+
+.line-4 {
+    border-left: 6px solid #BBC3A4;
+    margin: 1rem;
+}
+
+.line-5 {
+    border-left: 6px solid #C3E2C2;
+    margin: 1rem;
+}
+
+.col h5 {
+    color: #185356;
+    margin: 1rem;
+    font-weight: 700;
+    font-family: Inter;
+}
+
+
+/* ------------- View button ------------- */
+
+.button-3 {
+    appearance: none;
+    background-color: #365E52;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    width: 80px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    display: inline-flex;
+    /* Change to inline-flex */
+    align-items: center;
+    /* Align items vertically in the center */
+    justify-content: center;
+    /* Align content horizontally in the center */
+}
+
+.button-3:hover {
+    background-color: #2c974b;
+}
+
+.button-3:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+}
+
+.button-4 {
+    appearance: none;
+    background-color: #99BC85;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    width: 80px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    display: inline-flex;
+    /* Change to inline-flex */
+    align-items: center;
+    /* Align items vertically in the center */
+    justify-content: center;
+    /* Align content horizontally in the center */
+}
+
+.button-4:hover {
+    background-color: #2c974b;
+}
+
+.button-4:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+}
+
+.align-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+/* ------------- Report button ------------- */
+
+.button-28 {
+    background-color: transparent;
+    border-radius: 7px;
+    border: 1px solid #144134;
+    color: #365E52;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 40px;
+    outline: none;
+    padding: 6px 16px;
+    text-align: center;
+    text-decoration: none;
+    transition: 300ms;
+    touch-action: manipulation;
+    will-change: transform;
+    margin: 1rem;
+}
+
+.button-28:disabled {
+    pointer-events: none;
+}
+
+.button-28:hover {
+    background-color: #A8C6A3;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+}
+
+.button-28:active {
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+
+/* ------------- Search box ------------- */
+
+.search {
+    position: relative;
+    display: flex;
+    margin: 1rem;
+}
+
+.searchTerm {
+    max-width: 300px;
+    /* Limit maximum width */
+    width: 100%;
+    /* Take up full width */
+    border: 3px solid #B4B4B8;
+    padding: 5px;
+    height: 2.2rem;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #365E52;
+}
+
+.searchTerm:focus {
+    color: #144134;
+}
+
+.searchButton {
+    width: 40px;
+    height: 36px;
+    border: 1px solid #A8C6A3;
+    background: #A8C6A3;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.searchButton:hover {
+    background: #144134;
+}
+
+
+/* ------------- Dropdown ------------- */
+
+.dropbtn {
+    color: #365E52;
+    padding: 2px 20px 2px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 7px;
+    border: 1px solid #365E52;
+    background: white;
+    cursor: pointer;
+    margin: 1rem;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+    background-color: #A8C6A3;
+}
+
+
+/* ------------- report form ------------- */
+
+.BarangayLogo {
+    width: 400px;
+    cursor: default;
+}
+
+.borderform {
+    width: 50vmax;
+    min-width: 70vmin;
+    height: auto;
+    padding: 10px;
+    margin: auto;
+    margin-top: 20px;
+    text-align: left;
+    background-color: #fff;
+    border: 3px solid #316e60;
+    border-radius: 5px;
+}
+
+.form {
+    margin-top: 20px;
+    font-size: medium;
+}
+
+.form hr {
+    height: 3px;
+    background-color: #32524b;
+}
+
+.space {
+    font-size: large;
+    color: #285c50;
+}
+
+.ticket {
+    color: #285c50;
+    font-weight: 600px;
+}
+
+
+/* ------------- Maps ------------- */
+
+
+/* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+
+#map {
+    height: 90%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.chart {
+    margin: 1rem;
+}
+
+.chart h4 {
+    color: #185356;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+}
+
+.chart ul li {
+    list-style: none;
+    position: relative;
+    padding: 3px 0 2px 25px;
+}
+
+.chart ul li::before {
+    content: '*';
+    position: absolute;
+    top: 6px;
+    left: 0;
+}
+
+
+/* ------------- Responsive ------------- */
+
+.custom-scrollbar {
+    position: relative;
+    height: 400px;
+    overflow: auto;
+}
+
+.scroll-y {
+    display: block;
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        z-index: 99;
+    }
+    .content {
+        padding-top: 5rem;
+        table-layout: fixed;
+        width: 100%;
+    }
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        height: 100vh;
+        width: 100%;
+        max-width: 300px;
+        transition: 0.2s linear;
+    }
+    .sidebar.is-active {
+        left: 0;
+    }
+    .align-right {
+        flex-direction: column;
+        justify-content: initial;
+    }
+    .search {
+        flex-wrap: wrap;
+    }
+    .searchTerm {
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+    .searchButton {
+        width: 100%;
+    }
+    .dropbtn {
+        padding: 0.5rem;
+    }
+    .box {
+        margin: 0.5rem;
+    }
+    .borderform {
+        width: 40vmax;
+    }
+}
+
+
+/*
+* {
+	background: #000 !important;
+	color: #0f0 !important;
+	outline: solid #f00 1px !important;
+  } */
