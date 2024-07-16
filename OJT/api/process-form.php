@@ -19,16 +19,23 @@ if ($conn->connect_error) {
 // Prepare data for insertion
 $firstname = isset($_POST['firstname']) ? $_POST['firstname'] : "";
 $lastname = isset($_POST['lastname']) ? $_POST['lastname'] : "";
-$age = isset($_POST['age']) ? (int)$_POST['age'] : 0;
+$middleinitial = isset($_POST['middleinitial']) ? $_POST['middleinitial'] : "";
+$birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : "";
+$phonenumber = isset($_POST['phonenumber']) ? $_POST['phonenumber'] : "";
 $gender = isset($_POST['gender']) ? (int)$_POST['gender'] : 0;
 $baranggay = isset($_POST['baranggay']) ? (int)$_POST['baranggay'] : 0;
 $vaccine_id = isset($_POST['vaccine_id']) ? (int)$_POST['vaccine_id'] : 0;
 $dose_id = isset($_POST['dose_id']) ? (int)$_POST['dose_id'] : 0;
 
-// Sanitize data before inserting (replace with proper sanitization)
+// Calculate age based on birthdate
+$birthdate = mysqli_real_escape_string($conn, $birthdate);
+$age = date_diff(date_create($birthdate), date_create('today'))->y;
+
+// Sanitize other data before inserting (replace with proper sanitization)
 $firstname = mysqli_real_escape_string($conn, $firstname);
 $lastname = mysqli_real_escape_string($conn, $lastname);
-$age = mysqli_real_escape_string($conn, $age);
+$middleinitial = mysqli_real_escape_string($conn, $middleinitial);
+$phonenumber = mysqli_real_escape_string($conn, $phonenumber);
 $gender = mysqli_real_escape_string($conn, $gender);
 $baranggay = mysqli_real_escape_string($conn, $baranggay);
 $vaccine_id = mysqli_real_escape_string($conn, $vaccine_id);
@@ -64,13 +71,6 @@ $gender_mappings = [
 ];
 
 // Define mappings for dose tables
-$dose_table_mappings = [
-    1 => 'hpv_dose1',
-    2 => 'hpv_dose2',
-    3 => 'hpv_dose3',
-];
-
-// Define mappings for vaccine and dose combinations
 $vaccine_dose_table_mappings = [
     1 => [ // HPV
         1 => 'hpv_dose1',
@@ -121,12 +121,12 @@ if ($vaccine_check_result->num_rows > 0) {
 
     if ($user_check_result->num_rows > 0) {
         // Update the existing user record
-        $sql = "UPDATE users SET Age = '$age', Gender = '$gender', Baranggay = '$baranggay', dose_id = '$dose_id', submitted_at = NOW(), status = 'Pending'
+        $sql = "UPDATE users SET Age = '$age', Gender = '$gender', Baranggay = '$baranggay', dose_id = '$dose_id', birthdate = '$birthdate', phonenumber = '$phonenumber', middleinitial = '$middleinitial', submitted_at = NOW(), status = 'Pending'
                 WHERE FirstName = '$firstname' AND LastName = '$lastname' AND vaccine_id = '$vaccine_id'";
     } else {
         // Insert data into users table
-        $sql = "INSERT INTO users (FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, submitted_at, status)
-                VALUES ('$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
+        $sql = "INSERT INTO users (FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, birthdate, phonenumber, middleinitial, submitted_at, status)
+                VALUES ('$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', '$birthdate', '$phonenumber', '$middleinitial', NOW(), 'Pending')";
     }
 
     if ($conn->query($sql) === TRUE) {
@@ -139,10 +139,10 @@ if ($vaccine_check_result->num_rows > 0) {
         // Check if valid dose table and baranggay table were found
         if ($dose_table && $baranggay_table) {
             // Insert data into the appropriate dose and baranggay tables
-            $dose_sql = "INSERT INTO $dose_table (id, FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, submitted_at, status)
-                         VALUES ('$user_id', '$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
-            $baranggay_sql = "INSERT INTO $baranggay_table (id, FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, submitted_at, status)
-                              VALUES ('$user_id', '$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
+            $dose_sql = "INSERT INTO $dose_table (id, FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, birthdate, phonenumber, middleinitial, submitted_at, status)
+                         VALUES ('$user_id', '$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', '$birthdate', '$phonenumber', '$middleinitial', NOW(), 'Pending')";
+            $baranggay_sql = "INSERT INTO $baranggay_table (id, FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, birthdate, phonenumber, middleinitial, submitted_at, status)
+                              VALUES ('$user_id', '$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', '$birthdate', '$phonenumber', '$middleinitial', NOW(), 'Pending')";
 
             if ($conn->query($dose_sql) === TRUE && $conn->query($baranggay_sql) === TRUE) {
                 echo json_encode(["status" => "ok", "message" => "New record created successfully in $dose_table and $baranggay_table tables."]);
