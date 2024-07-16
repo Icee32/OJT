@@ -20,8 +20,8 @@ if ($conn->connect_error) {
 $firstname = isset($_POST['firstname']) ? $_POST['firstname'] : "";
 $lastname = isset($_POST['lastname']) ? $_POST['lastname'] : "";
 $age = isset($_POST['age']) ? (int)$_POST['age'] : 0;
-$gender = isset($_POST['gender']) ? $_POST['gender'] : "";
-$baranggay = isset($_POST['baranggay']) ? $_POST['baranggay'] : "";
+$gender = isset($_POST['gender']) ? (int)$_POST['gender'] : 0;
+$baranggay = isset($_POST['baranggay']) ? (int)$_POST['baranggay'] : 0;
 $vaccine_id = isset($_POST['vaccine_id']) ? (int)$_POST['vaccine_id'] : 0;
 $dose_id = isset($_POST['dose_id']) ? (int)$_POST['dose_id'] : 0;
 
@@ -34,11 +34,73 @@ $baranggay = mysqli_real_escape_string($conn, $baranggay);
 $vaccine_id = mysqli_real_escape_string($conn, $vaccine_id);
 $dose_id = mysqli_real_escape_string($conn, $dose_id);
 
+// Define mappings for baranggay tables
+$baranggay_table_mappings = [
+    1 => 'bg_aplaya',
+    2 => 'bg_balibago',
+    3 => 'bg_caingin',
+    4 => 'bg_dila',
+    5 => 'bg_dita',
+    6 => 'bg_donjose',
+    7 => 'bg_ibaba',
+    8 => 'bg_kanluran',
+    9 => 'bg_labas',
+    10 => 'bg_macabling',
+    11 => 'bg_malitlit',
+    12 => 'bg_malusak',
+    13 => 'bg_marketarea',
+    14 => 'bg_pooc',
+    15 => 'bg_pulongsantacruz',
+    16 => 'bg_santodomingo',
+    17 => 'bg_sinalhan',
+    18 => 'bg_tagapo',
+    // Add more baranggays here
+];
+
+// Define mappings for gender
+$gender_mappings = [
+    1 => 'Male',
+    2 => 'Female',
+];
+
+// Define mappings for dose tables
+$dose_table_mappings = [
+    1 => 'hpv_dose1',
+    2 => 'hpv_dose2',
+    3 => 'hpv_dose3',
+];
+
+// Define mappings for vaccine and dose combinations
+$vaccine_dose_table_mappings = [
+    1 => [ // HPV
+        1 => 'hpv_dose1',
+        2 => 'hpv_dose2',
+        3 => 'hpv_dose3',
+    ],
+    2 => [ // Flu
+        1 => 'flu_dose1',
+        2 => 'flu_dose2',
+        3 => 'flu_dose3',
+    ],
+    3 => [ // Pneumonia
+        1 => 'pneumonia_dose1',
+        2 => 'pneumonia_dose2',
+        3 => 'pneumonia_dose3',
+    ],
+];
+
 // Check if the vaccine_id exists in tblvaccine
 $vaccine_check_sql = "SELECT * FROM tblvaccine WHERE vaccineid = '$vaccine_id'";
 $vaccine_check_result = $conn->query($vaccine_check_sql);
 
 if ($vaccine_check_result->num_rows > 0) {
+    // Check if the gender is valid
+    if (!array_key_exists($gender, $gender_mappings)) {
+        echo json_encode(["status" => "error", "message" => "Invalid gender."]);
+        $conn->close();
+        exit();
+    }
+
     // Check for existing records of dose 1 and dose 2 before inserting dose 3
     if ($dose_id == 3) {
         $dose1_check_sql = "SELECT * FROM users WHERE dose_id = 1 AND vaccine_id = '$vaccine_id' AND FirstName = '$firstname' AND LastName = '$lastname'";
@@ -53,45 +115,25 @@ if ($vaccine_check_result->num_rows > 0) {
         }
     }
 
-    // Insert data into users table
-    $sql = "INSERT INTO users (FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, submitted_at, status)
-            VALUES ('$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
+    // Check if the user already exists in the users table
+    $user_check_sql = "SELECT * FROM users WHERE FirstName = '$firstname' AND LastName = '$lastname' AND vaccine_id = '$vaccine_id'";
+    $user_check_result = $conn->query($user_check_sql);
+
+    if ($user_check_result->num_rows > 0) {
+        // Update the existing user record
+        $sql = "UPDATE users SET Age = '$age', Gender = '$gender', Baranggay = '$baranggay', dose_id = '$dose_id', submitted_at = NOW(), status = 'Pending'
+                WHERE FirstName = '$firstname' AND LastName = '$lastname' AND vaccine_id = '$vaccine_id'";
+    } else {
+        // Insert data into users table
+        $sql = "INSERT INTO users (FirstName, LastName, Age, Gender, Baranggay, vaccine_id, dose_id, submitted_at, status)
+                VALUES ('$firstname', '$lastname', '$age', '$gender', '$baranggay', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
+    }
 
     if ($conn->query($sql) === TRUE) {
-        $user_id = $conn->insert_id; // Get the ID of the inserted user record
+        $user_id = ($user_check_result->num_rows > 0) ? $user_check_result->fetch_assoc()['id'] : $conn->insert_id; // Get the ID of the user record
 
-        // Define mappings for dose tables
-        $dose_table_mappings = [
-            1 => 'dose1',
-            2 => 'dose2',
-            3 => 'dose3',
-        ];
-
-        // Define mappings for baranggay tables
-        $baranggay_table_mappings = [
-            'Aplaya' => 'bg_aplaya',
-            'Balibago' => 'bg_balibago',
-            'Caingin' => 'bg_caingin',
-            'Dila' => 'bg_dila',
-            'Dita' => 'bg_dita',
-            'Don Jose' => 'bg_donjose',
-            'Ibaba' => 'bg_ibaba',
-            'Kanluran (Poblacion Uno)' => 'bg_kanluran',
-            'Labas' => 'bg_labas',
-            'Macabling' => 'bg_macabling',
-            'Malitlit' => 'bg_malitlit',
-            'Malusak (Poblacion Dos)' => 'bg_malusak',
-            'Market Area (Poblacion Tres)' => 'bg_marketarea',
-            'Pooc (Pook)' => 'bg_pooc',
-            'Pulong Santa Cruz' => 'bg_pulongsantacruz',
-            'Santo Domingo' => 'bg_santodomingo',
-            'Sinalhan' => 'bg_sinalhan',
-            'Tagapo' => 'bg_tagapo',
-            // Add more baranggays here
-        ];
-
-        // Determine the table names based on dose_id and baranggay
-        $dose_table = isset($dose_table_mappings[$dose_id]) ? $dose_table_mappings[$dose_id] : null;
+        // Determine the dose table based on vaccine_id and dose_id
+        $dose_table = isset($vaccine_dose_table_mappings[$vaccine_id][$dose_id]) ? $vaccine_dose_table_mappings[$vaccine_id][$dose_id] : null;
         $baranggay_table = isset($baranggay_table_mappings[$baranggay]) ? $baranggay_table_mappings[$baranggay] : null;
 
         // Check if valid dose table and baranggay table were found
