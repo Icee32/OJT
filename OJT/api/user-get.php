@@ -4,7 +4,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "adminstarosaform";
+$dbname = "adminstarosaform";  // Corrected database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -46,8 +46,8 @@ function getUserData($filters = []) {
     }
 
     $sql = "SELECT users.id, users.FirstName as firstname, users.LastName as lastname, users.middleinitial, users.birthdate, users.Age as age, 
-            users.phonenumber, gender.gendername as gender, baranggay.baranggayname as baranggay, 
-            vaccine.vaccinename as vaccinetype, users.dose_id, users.status, users.submitted_at
+            users.phonenumber, gender.gendername as gender, baranggay.baranggayname as baranggay, users.baranggay_id, 
+            vaccine.vaccinename as vaccinetype, users.vaccine_id, users.dose_id, users.status, users.submitted_at
             FROM users
             LEFT JOIN tblgender AS gender ON users.gender_id = gender.genderid
             LEFT JOIN tblbaranggay AS baranggay ON users.baranggay_id = baranggay.baranggayid

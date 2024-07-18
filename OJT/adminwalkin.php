@@ -478,7 +478,6 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
             </div>
 
             <i class='bx bx-search'></i>
-            <div class='bx bx-search'></i>
             <div class="container">
                 <form method="GET" action="adminwalkin.php">
                     <div class="row">
@@ -508,23 +507,20 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
                                 <option value="2" <?= isset($_GET['gender']) && $_GET['gender'] == '2' ? 'selected' : '' ?>>Female</option>
                             </select>
                         </div>
-                        <i class='bx bx-filter'></i>
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-primary">Filter</button>
                             <a href="adminwalkin.php" class="btn btn-danger">Reset</a>
                         </div>
-                        <div class="col-md-2"></div>
                     </div>
                 </form>
             </div>
-            <i class='bx bx-filter'></i>
             <table class="table table-responsive" id="userstbl">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>FirstName</th>
-                        <th>LastName</th>
-                        <th>MiddleInitial</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Middle Initial</th>
                         <th>Birthdate</th>
                         <th>Age</th>
                         <th>Gender</th>
@@ -534,6 +530,7 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
                         <th>Phone Number</th>
                         <th>Status</th>
                         <th>Submitted At</th>
+                        <th>Actions</th> <!-- Add actions column -->
                     </tr>
                 </thead>
                 <tbody>
@@ -557,13 +554,16 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
                                 <td><?= htmlspecialchars($user['phonenumber']); ?></td>
                                 <td><?= htmlspecialchars($user['status']); ?></td>
                                 <td><?= htmlspecialchars($user['submitted_at']); ?></td>
+                                <td>
+                                    <a href="view-registrant.php?id=<?= htmlspecialchars($user['id']); ?>" class="btn btn-info">View</a>
+                                </td> <!-- Add view action -->
                             </tr>
                             <?php
                         }
                     } else {
                         ?>
                         <tr>
-                            <td colspan="13">No record found.</td>
+                            <td colspan="14">No record found.</td>
                         </tr>
                         <?php
                     }
@@ -573,6 +573,8 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
         </div>
     </div>
 </section>
+
+
 
 
         <!-- MAIN -->
