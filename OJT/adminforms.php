@@ -53,11 +53,29 @@
         </div>
         <div class="input-div one">
           <div class="i">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="div">
+            <h5>Middle Initial</h5>
+            <input type="text" class="input" id="MiddleInitial" name="middleinitial" maxlength="3" required/>
+          </div>
+        </div>
+        <div class="input-div one">
+          <div class="i">
             <i class="fas fa-calendar"></i>
           </div>
           <div class="div">
-            <h5>Age</h5>
-            <input type="number" class="input" id="Age" name="age" required/>
+            <h5>Birthdate</h5>
+            <input type="date" class="input" id="Birthdate" name="birthdate" required/>
+          </div>
+        </div>
+        <div class="input-div one">
+          <div class="i">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="div">
+            <h5>Phone Number</h5>
+            <input type="text" class="input" id="PhoneNumber" name="phonenumber" maxlength="15" required/>
           </div>
         </div>
         <div class="input-div one select-div">
@@ -66,10 +84,10 @@
           </div>
           <div class="div">
             <h5>Gender</h5>
-            <select id="Gender" class="input form-select" name="gender" required>
+            <select id="Gender" class="input form-select" name="gender_id" required>
               <option disabled selected></option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="1">Male</option>
+              <option value="2">Female</option>
             </select>
           </div>
         </div>
@@ -79,54 +97,54 @@
           </div>
           <div class="div">
             <h5>Barangay</h5>
-            <select id="Baranggay" class="input form-select" name="baranggay" required>
+            <select id="Baranggay" class="input form-select" name="baranggay_id" required>
               <option disabled selected></option>
-              <option value="Aplaya">Aplaya</option>
-              <option value="Balibago">Balibago</option>
-              <option value="Caingin">Caingin</option>
-              <option value="Dila">Dila</option>
-              <option value="Dita">Dita</option>
-              <option value="Don Jose">Don Jose</option>
-              <option value="Ibaba">Ibaba</option>
-              <option value="Kanluran (Poblacion Uno)">Kanluran (Poblacion Uno)</option>
-              <option value="Labas">Labas</option>
-              <option value="Macabling">Macabling</option>
-              <option value="Malitlit">Malitlit</option>
-              <option value="Malusak (Poblacion Dos)">Malusak (Poblacion Dos)</option>
-              <option value="Market Area(Poblacion Tres)">Market Area(Poblacion Tres)</option>
-              <option value="Pooc (Pook)">Pooc (Pook)</option>
-              <option value="Pulong Santa Cruz">Pulong Santa Cruz</option>
-              <option value="Santo Domingo">Santo Domingo</option>
-              <option value="Sinalhan">Sinalhan</option>
-              <option value="Tagapo">Tagapo</option>
+              <option value="1">Aplaya</option>
+              <option value="2">Balibago</option>
+              <option value="3">Caingin</option>
+              <option value="4">Dila</option>
+              <option value="5">Dita</option>
+              <option value="6">Don Jose</option>
+              <option value="7">Ibaba</option>
+              <option value="8">Kanluran (Poblacion Uno)</option>
+              <option value="9">Labas</option>
+              <option value="10">Macabling</option>
+              <option value="11">Malitlit</option>
+              <option value="12">Malusak (Poblacion Dos)</option>
+              <option value="13">Market Area(Poblacion Tres)</option>
+              <option value="14">Pooc (Pook)</option>
+              <option value="15">Pulong Santa Cruz</option>
+              <option value="16">Santo Domingo</option>
+              <option value="17">Sinalhan</option>
+              <option value="18">Tagapo</option>
             </select>
           </div>
         </div>
-        <div class="input-div one">
+        <div class="input-div one select-div">
           <div class="i">
             <i class="fas fa-syringe"></i>
           </div>
           <div class="div">
             <h5>Type of Vaccine</h5>
             <select id="Vaccine_ID" class="input form-select" name="vaccine_id" required>
-            <option disabled selected></option>
-            <option value="1">HPV</option>
-            <option value="2">Flu</option>
-            <option value="3">Pneumonia</option>
+              <option disabled selected></option>
+              <option value="1">HPV</option>
+              <option value="2">Flu</option>
+              <option value="3">Pneumonia</option>
             </select>
           </div>
         </div>
-        <div class="input-div one">
+        <div class="input-div one select-div">
           <div class="i">
             <i class="fas fa-syringe"></i>
           </div>
           <div class="div">
             <h5>Number of Doses Taken</h5>
             <select id="Dose_ID" class="input form-select" name="dose_id" required>
-            <option disabled selected></option>
-            <option value="1">1st Dose</option>
-            <option value="2">2nd Dose</option>
-            <option value="3">3rd Dose</option>
+              <option disabled selected></option>
+              <option value="1">1st Dose</option>
+              <option value="2">2nd Dose</option>
+              <option value="3">3rd Dose</option>
             </select>
           </div>
         </div>
@@ -137,59 +155,57 @@
 
   <script type="text/javascript" src="js/loginv2.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   <script>
     $(document).ready(function() {
-        $("#vaccinationForm").submit(function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
+      $("#vaccinationForm").submit(function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
 
-            var firstname = $("#FirstName").val();
-            var lastname = $("#LastName").val();
-            var vaccine_id = $("#Vaccine_ID").val();
-            var dose_id = $("#Dose_ID").val();
+        var firstname = $("#FirstName").val();
+        var lastname = $("#LastName").val();
+        var vaccine_id = $("#Vaccine_ID").val();
+        var dose_id = $("#Dose_ID").val();
 
-            // First AJAX call to check doses
-            $.ajax({
-                url: 'api/check-doses.php',
+        // First AJAX call to check doses
+        $.ajax({
+          url: 'api/check-doses.php',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            firstname: firstname,
+            lastname: lastname,
+            vaccine_id: vaccine_id,
+            dose_id: dose_id
+          },
+          success: function(response) {
+            if (response.status === 'ok') {
+              // Second AJAX call to submit the form
+              $.ajax({
+                url: 'api/process-form.php',
                 type: 'POST',
                 dataType: 'json',
-                data: {
-                    firstname: firstname,
-                    lastname: lastname,
-                    vaccine_id: vaccine_id,
-                    dose_id: dose_id
-                },
+                data: $("#vaccinationForm").serialize(),
                 success: function(response) {
-                    if (response.status === 'ok') {
-                        // Second AJAX call to submit the form
-                        $.ajax({
-                            url: 'api/process-form.php',
-                            type: 'POST',
-                            dataType: 'json',
-                            data: $("#vaccinationForm").serialize(),
-                            success: function(response) {
-                                if (response.status === 'ok') {
-                                    alertify.success(response.message);
-                                    $("#vaccinationForm")[0].reset(); // Reset the form fields
-                                } else {
-                                    alertify.error(response.message);
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                alertify.error("Error occurred. Please try again later.");
-                            }
-                        });
-                    } else {
-                        alertify.error(response.message);
-                    }
+                  if (response.status === 'ok') {
+                    alertify.success(response.message);
+                    $("#vaccinationForm")[0].reset(); // Reset the form fields
+                  } else {
+                    alertify.error(response.message);
+                  }
                 },
                 error: function(xhr, status, error) {
-                    alertify.error("Error occurred. Please try again later.");
+                  alertify.error("Error occurred. Please try again later.");
                 }
-            });
+              });
+            } else {
+              alertify.error(response.message);
+            }
+          },
+          error: function(xhr, status, error) {
+            alertify.error("Error occurred. Please try again later.");
+          }
         });
+      });
     });
   </script>
 </body>
-
-</html>
