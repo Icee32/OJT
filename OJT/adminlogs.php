@@ -27,34 +27,28 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             <span class="text" style="margin-left: 20px;">&nbsp; Sta.Rosa Vaccination</span>
         </a>
         <ul class="side-menu top">
-            <li >
-                <a href="adminindex.php">
+            <li>
+                <a href="admindashboard.php">
                     <i class='bx bxs-dashboard'></i>
                     <span class="text">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="adminwalkin.php">
+                <a href="adminforms.php">
                     <i class='bx bxs-shopping-bag-alt'></i>
-                    <span class="text">Walk-In Forms</span>
+                    <span class="text">Admin Form</span>
                 </a>
             </li>
             <li>
-                <a href="adminschoolbase.php">
+                <a href="adminvacregistrants.php">
                     <i class='bx bxs-doughnut-chart'></i>
-                    <span class="text">School-Base Forms</span>
+                    <span class="text">Vaccine Registrants</span>
                 </a>
             </li>
             <li class="active">
                 <a href="adminlogs.php">
                     <i class='bx bxs-message-dots'></i>
                     <span class="text">Logs</span>
-                </a>
-            </li>
-            <li>
-                <a href="adminteam.php">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Team</span>
                 </a>
             </li>
         </ul>
@@ -105,10 +99,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
         <main>
             <div class="head-title">
                 <div class="left">
-                    <h1>Dashboard</h1>
+                    <h1>Logs</h1>
                     <ul class="breadcrumb">
                         <li>
-                            <a href="adminindex.php">Dashboard</a>
+                            <a href="adminindex.php">Logs</a>
                         </li>
                         <li><i class='bx bx-chevron-right'></i></li>
                         <li>

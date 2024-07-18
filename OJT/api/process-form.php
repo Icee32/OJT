@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "adminstarosaforms";
+$dbname = "adminstarosaform";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -126,49 +126,38 @@ if ($vaccine_check_result->num_rows > 0) {
         if ($conn->query($sql) === TRUE) {
             echo json_encode(["status" => "ok", "message" => "Record updated successfully."]);
         } else {
-            echo json_encode(["status" => "error", "message" => "Error: " . $sql . "<br>" . $conn->error]);
+            echo json_encode(["status" => "error", "message" => "Error: " . $conn->error]);
         }
     } else {
         // Insert data into users table
         $sql = "INSERT INTO users (FirstName, LastName, middleinitial, gender_id, birthdate, Age, baranggay_id, phonenumber, vaccine_id, dose_id, submitted_at, status)
                 VALUES ('$firstname', '$lastname', '$middleinitial', '$gender_id', '$birthdate', '$age', '$baranggay_id', '$phonenumber', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
-    }
+        if ($conn->query($sql) === TRUE) {
+            $user_id = $conn->insert_id; // Get the ID of the newly inserted record
 
-    if ($conn->query($sql) === TRUE) {
-        $user_id = ($user_check_result->num_rows > 0) ? $user_check_result->fetch_assoc()['id'] : $conn->insert_id; // Get the ID of the user record
+            // Determine the dose table based on vaccine_id and dose_id
+            $dose_table = isset($vaccine_dose_table_mappings[$vaccine_id][$dose_id]) ? $vaccine_dose_table_mappings[$vaccine_id][$dose_id] : null;
+            $baranggay_table = isset($baranggay_table_mappings[$baranggay_id]) ? $baranggay_table_mappings[$baranggay_id] : null;
 
-        // Determine the dose table based on vaccine_id and dose_id
-        $dose_table = isset($vaccine_dose_table_mappings[$vaccine_id][$dose_id]) ? $vaccine_dose_table_mappings[$vaccine_id][$dose_id] : null;
-        $baranggay_table = isset($baranggay_table_mappings[$baranggay_id]) ? $baranggay_table_mappings[$baranggay_id] : null;
+            // Check if valid dose table and baranggay table were found
+            if ($dose_table && $baranggay_table) {
+                // Insert data into the appropriate dose and baranggay tables
+                $dose_sql = "INSERT INTO $dose_table (id, FirstName, LastName, middleinitial, gender_id, birthdate, Age, baranggay_id, phonenumber, vaccine_id, dose_id, submitted_at, status)
+                             VALUES ('$user_id', '$firstname', '$lastname', '$middleinitial', '$gender_id', '$birthdate', '$age', '$baranggay_id', '$phonenumber', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
+                $baranggay_sql = "INSERT INTO $baranggay_table (id, FirstName, LastName, middleinitial, gender_id, birthdate, Age, baranggay_id, phonenumber, vaccine_id, dose_id, submitted_at, status)
+                                  VALUES ('$user_id', '$firstname', '$lastname', '$middleinitial', '$gender_id', '$birthdate', '$age', '$baranggay_id', '$phonenumber', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
 
-        // Check if valid dose table and baranggay table were found
-        if ($dose_table && $baranggay_table) {
-            // Check if the dose record already exists
-            $dose_check_sql = "SELECT * FROM $dose_table WHERE FirstName = '$firstname' AND LastName = '$lastname' AND vaccine_id = '$vaccine_id' AND dose_id = '$dose_id'";
-            $dose_check_result = $conn->query($dose_check_sql);
-
-            if ($dose_check_result->num_rows > 0) {
-                echo json_encode(["status" => "error", "message" => "Record for $firstname $lastname already exists in $dose_table."]);
-                $conn->close();
-                exit();
-            }
-
-            // Insert data into the appropriate dose and baranggay tables
-            $dose_sql = "INSERT INTO $dose_table (id, FirstName, LastName, middleinitial, gender_id, birthdate, Age, baranggay_id, phonenumber, vaccine_id, dose_id, submitted_at, status)
-                         VALUES ('$user_id', '$firstname', '$lastname', '$middleinitial', '$gender_id', '$birthdate', '$age', '$baranggay_id', '$phonenumber', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
-            $baranggay_sql = "INSERT INTO $baranggay_table (id, FirstName, LastName, middleinitial, gender_id, birthdate, Age, baranggay_id, phonenumber, vaccine_id, dose_id, submitted_at, status)
-                              VALUES ('$user_id', '$firstname', '$lastname', '$middleinitial', '$gender_id', '$birthdate', '$age', '$baranggay_id', '$phonenumber', '$vaccine_id', '$dose_id', NOW(), 'Pending')";
-
-            if ($conn->query($dose_sql) === TRUE && $conn->query($baranggay_sql) === TRUE) {
-                echo json_encode(["status" => "ok", "message" => "New record created successfully in $dose_table and $baranggay_table tables."]);
+                if ($conn->query($dose_sql) === TRUE && $conn->query($baranggay_sql) === TRUE) {
+                    echo json_encode(["status" => "ok", "message" => "New record created successfully in $dose_table and $baranggay_table tables."]);
+                } else {
+                    echo json_encode(["status" => "error", "message" => "Error: " . $conn->error]);
+                }
             } else {
-                echo json_encode(["status" => "error", "message" => "Error: " . $conn->error]);
+                echo json_encode(["status" => "error", "message" => "Invalid dose_id or baranggay."]);
             }
         } else {
-            echo json_encode(["status" => "error", "message" => "Invalid dose_id or baranggay."]);
+            echo json_encode(["status" => "error", "message" => "Error: " . $conn->error]);
         }
-    } else {
-        echo json_encode(["status" => "error", "message" => "Error: " . $sql . "<br>" . $conn->error]);
     }
 } else {
     echo json_encode(["status" => "error", "message" => "Error: Invalid vaccine_id."]);

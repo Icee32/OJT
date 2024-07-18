@@ -44,7 +44,7 @@ $user = $result->fetch_assoc();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Registrant</title>
-    <link rel="stylesheet" href="path/to/your/css">
+    <link rel="stylesheet" href="css/adminstyle.php">
 </head>
 <body>
     <div class="container">
@@ -76,11 +76,11 @@ $user = $result->fetch_assoc();
             </tr>
             <tr>
                 <th>Gender</th>
-                <td><?= htmlspecialchars($user['gender_id']); ?></td>
+                <td><?= htmlspecialchars($user['gender']); ?></td>
             </tr>
             <tr>
                 <th>Baranggay ID</th>
-                <td><?= htmlspecialchars($user['baranggay_id']); ?></td>
+                <td><?= htmlspecialchars($user['baranggay']); ?></td>
             </tr>
             <tr>
                 <th>Vaccine ID</th>
@@ -103,7 +103,7 @@ $user = $result->fetch_assoc();
                 <td><?= htmlspecialchars($user['submitted_at']); ?></td>
             </tr>
         </table>
-        <a href="adminwalkin.php" class="btn btn-primary">Back</a>
+        <a href="adminvacregistrants.php" class="btn btn-primary">Back</a>
     </div>
 </body>
 </html>

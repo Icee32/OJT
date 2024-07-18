@@ -1,14 +1,15 @@
 <?php
-$servername = "localhost";  // Adjust if necessary
-$username = "root";  // Your MySQL username
-$password = "";  // Your MySQL password
-$dbname = "stauser";  // Your database name
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname1 = "adminstarosaform";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn1 = new mysqli($servername, $username, $password, $dbname1);
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($conn1->connect_error) {
+    die("Connection failed: " . $conn1->connect_error);
 }
 ?>
