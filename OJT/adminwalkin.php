@@ -8,7 +8,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname1 = "starosaforms";
+    $dbname1 = "adminstarosaform";
     
     // Create connections
     $conn1 = new mysqli($servername, $username, $password, $dbname1);
@@ -23,8 +23,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     $sqlTotal16to20 = "SELECT COUNT(*) as total16to20 FROM users WHERE age BETWEEN 16 AND 20";
     $sqlTotal21to59 = "SELECT COUNT(*) as total21to59 FROM users WHERE age BETWEEN 21 AND 59";
     $sqlTotal60plus = "SELECT COUNT(*) as total60plus FROM users Where age >= 60";
-    $sqlTotalMales = "SELECT COUNT(*)  as totalMales FROM users WHERE gender = 'male'";
-    $sqlTotalFemales = "SELECT COUNT(*) as totalFemales FROM users WHERE gender = 'female'";
+    $sqlTotalMales = "SELECT COUNT(*)  as totalMales FROM users WHERE gender_id = '1'";
+    $sqlTotalFemales = "SELECT COUNT(*) as totalFemales FROM users WHERE gender_id = '2'";
     $sqlTotalHPVRegistrants = "SELECT COUNT(*) as totalHPVRegistrants FROM users WHERE vaccine_id = '1'";
     $sqlTotalFluRegistrants = "SELECT COUNT(*) as totalFluRegistrants FROM users WHERE vaccine_id = '2'";
     $sqlTotalInfluenzaCount = "SELECT COUNT(*) as totalInfluenzaCount FROM users WHERE vaccine_id = '3'";
@@ -470,68 +470,68 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
     </ul>
 
 
-        <section class="box">
-            <div class="table-data">
-                <div class="order">
-                <div class="head">
-                        <h3>Registrants</h3>
-                        
-                </div>
+    <section class="box">
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Registrants</h3>
+            </div>
 
-                <i class='bx bx-search'></i>
-                <div class='bx bx-search'></i>
-                    <div class="container">
-                        <form method="GET" action="adminwalkin.php">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <input type="date" name="date" value="<?= isset($_GET['date']) ? $_GET['date'] : '' ?>" class="form-control">
-                                </div>
-                                <div class="col-md-2">
-                                    <select name="vaccine" class="form-select">
-                                        <option disabled selected>Vaccine Type</option>
-                                        <option value="1" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '1' ? 'selected' : '' ?>>HPV</option>
-                                        <option value="2" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '2' ? 'selected' : '' ?>>Flu</option>
-                                        <option value="3" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '3' ? 'selected' : '' ?>>Pneumonia</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <select name="dose" class="form-select">
-                                        <option disabled selected>Dose</option>
-                                        <option value="1" <?= isset($_GET['dose']) && $_GET['dose'] == '1' ? 'selected' : '' ?>>1st Dose</option>
-                                        <option value="2" <?= isset($_GET['dose']) && $_GET['dose'] == '2' ? 'selected' : '' ?>>2nd Dose</option>
-                                        <option value="3" <?= isset($_GET['dose']) && $_GET['dose'] == '3' ? 'selected' : '' ?>>3rd Dose</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <select name="gender" class="form-select">
-                                        <option disabled selected>Gender</option>
-                                        <option value="Male" <?= isset($_GET['gender']) && $_GET['gender'] == 'Male' ? 'selected' : '' ?>>Male</option>
-                                        <option value="Female" <?= isset($_GET['gender']) && $_GET['gender'] == 'Female' ? 'selected' : '' ?>>Female</option>
-                                    </select>
-                                </div>
-                                <i class='bx bx-filter'></i>
-                                <div class="col-md-2">
-                                    <button type="submit" class="btn btn-primary">Filter</button>
-                                    <a href="adminwalkin.php" class="btn btn-danger">Reset</a>
-                                </div>
-                                <div class="col-md-2"></div>
-                            </div>
-                        </form>
+            <i class='bx bx-search'></i>
+            <div class='bx bx-search'></i>
+            <div class="container">
+                <form method="GET" action="adminwalkin.php">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="date" name="date" value="<?= isset($_GET['date']) ? $_GET['date'] : '' ?>" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <select name="vaccine" class="form-select">
+                                <option disabled selected>Vaccine Type</option>
+                                <option value="1" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '1' ? 'selected' : '' ?>>HPV</option>
+                                <option value="2" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '2' ? 'selected' : '' ?>>Flu</option>
+                                <option value="3" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '3' ? 'selected' : '' ?>>Pneumonia</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="dose" class="form-select">
+                                <option disabled selected>Dose</option>
+                                <option value="1" <?= isset($_GET['dose']) && $_GET['dose'] == '1' ? 'selected' : '' ?>>1st Dose</option>
+                                <option value="2" <?= isset($_GET['dose']) && $_GET['dose'] == '2' ? 'selected' : '' ?>>2nd Dose</option>
+                                <option value="3" <?= isset($_GET['dose']) && $_GET['dose'] == '3' ? 'selected' : '' ?>>3rd Dose</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="gender" class="form-select">
+                                <option disabled selected>Gender</option>
+                                <option value="1" <?= isset($_GET['gender']) && $_GET['gender'] == '1' ? 'selected' : '' ?>>Male</option>
+                                <option value="2" <?= isset($_GET['gender']) && $_GET['gender'] == '2' ? 'selected' : '' ?>>Female</option>
+                            </select>
+                        </div>
+                        <i class='bx bx-filter'></i>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <a href="adminwalkin.php" class="btn btn-danger">Reset</a>
+                        </div>
+                        <div class="col-md-2"></div>
                     </div>
-                </div>
-                <i class='bx bx-filter'></i>
-                <table class="table table-responsive" id="userstbl">
-                <thead>
+                </form>
+            </div>
+            <i class='bx bx-filter'></i>
+            <table class="table table-responsive" id="userstbl">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>FirstName</th>
                         <th>LastName</th>
+                        <th>MiddleInitial</th>
+                        <th>Birthdate</th>
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Baranggay</th>
                         <th>Vaccine Type</th>
                         <th>Dose ID</th>
+                        <th>Phone Number</th>
                         <th>Status</th>
                         <th>Submitted At</th>
                     </tr>
@@ -539,45 +539,42 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
                 <tbody>
                     <?php
                     // Fetch user data
-                    if(isset($_GET['search'])) {
-                        $filterval = $_GET['search'];
-                        $users = getUserData($filterval);
-                    } else {
-                        $users = getUserData();
-                    }
-                    if($users !== false) {
-                        foreach($users as $user) {
+                    $users = getUserData($_GET);
+                    if ($users !== false) {
+                        foreach ($users as $user) {
                             ?>
                             <tr>
                                 <td><?= htmlspecialchars($user['id']); ?></td>
                                 <td><?= htmlspecialchars($user['firstname']); ?></td>
                                 <td><?= htmlspecialchars($user['lastname']); ?></td>
+                                <td><?= htmlspecialchars($user['middleinitial']); ?></td>
+                                <td><?= htmlspecialchars($user['birthdate']); ?></td>
                                 <td><?= htmlspecialchars($user['age']); ?></td>
                                 <td><?= htmlspecialchars($user['gender']); ?></td>
                                 <td><?= htmlspecialchars($user['baranggay']); ?></td>
                                 <td><?= htmlspecialchars($user['vaccinetype']); ?></td>
                                 <td><?= htmlspecialchars($user['dose_id']); ?></td>
+                                <td><?= htmlspecialchars($user['phonenumber']); ?></td>
                                 <td><?= htmlspecialchars($user['status']); ?></td>
-                                <?php
-                                    $formatted_date = date("Y-m-d H:i:s", strtotime($user['submitted_at']));
-                                    echo "<td>" . htmlspecialchars($formatted_date) . "</td>";
-                                ?>
+                                <td><?= htmlspecialchars($user['submitted_at']); ?></td>
                             </tr>
                             <?php
                         }
                     } else {
                         ?>
                         <tr>
-                            <td colspan="12">No record found.</td>
+                            <td colspan="13">No record found.</td>
                         </tr>
                         <?php
                     }
                     ?>
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
-    </section>         
+    </div>
+</section>
+
+
         <!-- MAIN -->
     </section>
     <!-- CONTENT -->

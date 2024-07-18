@@ -9,7 +9,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     $username = "root";
     $password = "";
     $dbname1 = "starosaschoolforms";
-    $dbname2 = "starosaforms";
+    $dbname2 = "adminstarosaform";
     
     // Create connections
     $conn1 = new mysqli($servername, $username, $password, $dbname1);
@@ -25,41 +25,41 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     
     // Queries to get the data
     $sqlTotalSchoolForms = "SELECT COUNT(*) as totalSchoolForms FROM starosaschoolforms.users";
-    $sqlTotalWalkInForms = "SELECT COUNT(*) as totalWalkInForms FROM starosaforms.users";
+    $sqlTotalWalkInForms = "SELECT COUNT(*) as totalWalkInForms FROM adminstarosaform.users";
     $sqlTotalFormsSubmitted = "SELECT 
         (SELECT COUNT(*) FROM starosaschoolforms.users) + 
-        (SELECT COUNT(*) FROM starosaforms.users) as totalFormsSubmitted";
+        (SELECT COUNT(*) FROM adminstarosaform.users) as totalFormsSubmitted";
     $sqlTotal9to15 = "SELECT 
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE age BETWEEN 9 AND 15) + 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE age BETWEEN 9 AND 15) as total9to15";
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE age BETWEEN 9 AND 15) as total9to15";
     $sqlTotal16to20 = "SELECT 
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE age BETWEEN 16 AND 20) + 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE age BETWEEN 16 AND 20) as total16to20";
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE age BETWEEN 16 AND 20) as total16to20";
     $sqlTotal21to59 = "SELECT 
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE age BETWEEN 21 AND 59) + 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE age BETWEEN 21 AND 59) as total21to59";
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE age BETWEEN 21 AND 59) as total21to59";
     $sqlTotal60plus = "SELECT
         (SELECT COUNT(*) FROM starosaschoolforms.users Where Age >= 60) +
-        (SELECT COUNT(*) FROM starosaforms.users Where Age >= 60) as total60plus";
+        (SELECT COUNT(*) FROM adminstarosaform.users Where Age >= 60) as total60plus";
     $sqlTotalMales = "SELECT 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE gender = 'male') + 
-        (SELECT COUNT(*) FROM starosaschoolforms.users WHERE gender = 'male') as totalMales";
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE gender_id = '1') + 
+        (SELECT COUNT(*) FROM starosaschoolforms.users WHERE gender = '1') as totalMales";
     $sqlTotalFemales = "SELECT 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE gender = 'female') + 
-        (SELECT COUNT(*) FROM starosaschoolforms.users WHERE gender = 'female') as totalFemales";
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE gender_id = '2') + 
+        (SELECT COUNT(*) FROM starosaschoolforms.users WHERE gender = '2') as totalFemales";
     $sqlTotalHPVRegistrants = "SELECT
-        (SELECT COUNT(*) FROM starosaforms.users WHERE vaccine_id = '1') + 
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE vaccine_id = '1') + 
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE vaccine_id = '1') as totalHPVRegistrants";
     $sqlTotalFluRegistrants = "SELECT
-        (SELECT COUNT(*) FROM starosaforms.users WHERE vaccine_id = '2') + 
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE vaccine_id = '2') + 
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE vaccine_id = '2') as totalFluRegistrants";
     $sqlTotalInfluenzaCount = "SELECT
-        (SELECT COUNT(*) FROM starosaforms.users WHERE vaccine_id = '3') + 
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE vaccine_id = '3') + 
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE vaccine_id = '3') as totalInfluenzaCount";
     $sqlTotalVaccines = "SELECT 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE vaccine_id = '1') + 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE vaccine_id = '2') + 
-        (SELECT COUNT(*) FROM starosaforms.users WHERE vaccine_id = '3') +
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE vaccine_id = '1') + 
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE vaccine_id = '2') + 
+        (SELECT COUNT(*) FROM adminstarosaform.users WHERE vaccine_id = '3') +
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE vaccine_id = '1') + 
         (SELECT COUNT(*) FROM starosaschoolforms.users WHERE vaccine_id = '2') + 
         (SELECT COUNT(*) FROM starosaschoolforms.users   WHERE vaccine_id = '3') as totalVaccines";
@@ -404,6 +404,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                     </ul>
                 </div>
             </div>
+            <!--FOOTER-->
         </main>
         <!-- MAIN -->
     </section>

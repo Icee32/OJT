@@ -1,35 +1,63 @@
 <?php
+
 // Database connection (replace with your credentials)
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "starosaforms";
+$dbname = "adminstarosaform";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    echo json_encode(["status" => "error", "message" => "Connection failed: " . $conn->connect_error]);
+    exit();
 }
 
-// Fetch user data
-function getUserData($search = null) {
+function getUserData($filters = []) {
     global $conn;
-    
-    $query = "SELECT u.id, u.firstname, u.lastname, u.age, u.gender, u.baranggay,
-                     u.vaccine_id, u.dose_id, v.vaccinetype, v.vaccinename, u.submitted_at, u.status 
-              FROM users u
-              LEFT JOIN tblvaccine v ON u.vaccine_id = v.vaccineid";
-    
-    if ($search) {
-        $query .= " WHERE CONCAT(u.id, u.firstname, u.lastname, u.submitted_at, u.status) LIKE '%$search%'";
+
+    $whereClauses = [];
+
+    if (isset($filters['date'])) {
+        $date = mysqli_real_escape_string($conn, $filters['date']);
+        $whereClauses[] = "DATE(submitted_at) = '$date'";
     }
-    
-    $result = $conn->query($query);
-    
+
+    if (isset($filters['vaccine'])) {
+        $vaccine = (int) $filters['vaccine'];
+        $whereClauses[] = "vaccine_id = $vaccine";
+    }
+
+    if (isset($filters['dose'])) {
+        $dose = (int) $filters['dose'];
+        $whereClauses[] = "dose_id = $dose";
+    }
+
+    if (isset($filters['gender'])) {
+        $gender = (int) $filters['gender'];
+        $whereClauses[] = "gender_id = $gender";
+    }
+
+    $whereSql = "";
+    if (count($whereClauses) > 0) {
+        $whereSql = "WHERE " . implode(" AND ", $whereClauses);
+    }
+
+    $sql = "SELECT users.id, users.FirstName as firstname, users.LastName as lastname, users.middleinitial, users.birthdate, users.Age as age, 
+            users.phonenumber, gender.gendername as gender, baranggay.baranggayname as baranggay, 
+            vaccine.vaccinename as vaccinetype, users.dose_id, users.status, users.submitted_at
+            FROM users
+            LEFT JOIN tblgender AS gender ON users.gender_id = gender.genderid
+            LEFT JOIN tblbaranggay AS baranggay ON users.baranggay_id = baranggay.baranggayid
+            LEFT JOIN tblvaccine AS vaccine ON users.vaccine_id = vaccine.vaccineid
+            $whereSql";
+
+    $result = $conn->query($sql);
+
     if ($result->num_rows > 0) {
-        $users = array();
+        $users = [];
         while ($row = $result->fetch_assoc()) {
             $users[] = $row;
         }
@@ -38,3 +66,4 @@ function getUserData($search = null) {
         return false;
     }
 }
+?>
