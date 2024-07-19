@@ -25,122 +25,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
       $yearFilter = $year !== 'ALL' ? "WHERE YEAR(registration_date) = '$year'" : "";
       $vaccineFilter = $vaccineType !== 'ALL' ? "AND vaccine_id = '$vaccineType'" : "";
 
-
-    // Queries to get the data
-    $sqlTotalFormsSubmitted = "SELECT COUNT(*) as totalFormsSubmitted FROM users ";
-    $sqlTotal9to15 = "SELECT COUNT(*) as total9to15 FROM users WHERE age BETWEEN 9 AND 15";
-    $sqlTotal16to20 = "SELECT COUNT(*) as total16to20 FROM users WHERE age BETWEEN 16 AND 20";
-    $sqlTotal21to59 = "SELECT COUNT(*) as total21to59 FROM users WHERE age BETWEEN 21 AND 59";
-    $sqlTotal60plus = "SELECT COUNT(*) as total60plus FROM users Where age >= 60";
-    $sqlTotalMales = "SELECT COUNT(*)  as totalMales FROM users WHERE gender_id = '1'";
-    $sqlTotalFemales = "SELECT COUNT(*) as totalFemales FROM users WHERE gender_id = '2'";
-    $sqlTotalHPVRegistrants = "SELECT COUNT(*) as totalHPVRegistrants FROM users WHERE vaccine_id = '1'";
-    $sqlTotalFluRegistrants = "SELECT COUNT(*) as totalFluRegistrants FROM users WHERE vaccine_id = '2'";
-    $sqlTotalInfluenzaCount = "SELECT COUNT(*) as totalInfluenzaCount FROM users WHERE vaccine_id = '3'";
-    $sqlTotalVaccines = "SELECT 
-        (SELECT COUNT(*) FROM users WHERE vaccine_id = '1') + 
-        (SELECT COUNT(*) FROM users WHERE vaccine_id = '2') + 
-        (SELECT COUNT(*) FROM users WHERE vaccine_id = '3') as totalVaccines";
-
-    
-    // Execute queries
-    $resultTotalFormsSubmitted = $conn1->query($sqlTotalFormsSubmitted);
-    $resultTotal9to15 = $conn1->query($sqlTotal9to15);
-    $resultTotal16to20 = $conn1->query($sqlTotal16to20);
-    $resultTotal21to59 = $conn1->query($sqlTotal21to59);
-    $resultTotal60plus = $conn1->query($sqlTotal60plus);
-    $resultTotalMales = $conn1->query($sqlTotalMales);
-    $resultTotalFemales = $conn1->query($sqlTotalFemales);
-    $resultTotalHPVRegistrants = $conn1->query($sqlTotalHPVRegistrants);
-    $resultTotalFluRegistrants = $conn1->query($sqlTotalFluRegistrants);
-    $resultTotalInfluenzaCount = $conn1->query($sqlTotalInfluenzaCount);
-    $resultTotalVaccines = $conn1->query($sqlTotalVaccines);
-
-    // Queries to get the count of users for each Baranggay
-$sqlAplaya = "SELECT COUNT(*) as totalAplaya FROM bg_aplaya";
-$sqlBalibago = "SELECT COUNT(*) as totalBalibago FROM bg_balibago";
-$sqlCaingin = "SELECT COUNT(*) as totalCaingin FROM bg_caingin";
-$sqlDila = "SELECT COUNT(*) as totalDila FROM bg_dila";
-$sqlDita = "SELECT COUNT(*) as totalDita FROM bg_dita";
-$sqlDonJose = "SELECT COUNT(*) as totalDonJose FROM bg_donjose";
-$sqlIbaba = "SELECT COUNT(*) as totalIbaba FROM bg_ibaba";
-$sqlKanluran = "SELECT COUNT(*) as totalKanluran FROM bg_kanluran";
-$sqlLabas = "SELECT COUNT(*) as totalLabas FROM bg_labas";
-$sqlMacabling = "SELECT COUNT(*) as totalMacabling FROM bg_macabling";
-$sqlMalitlit = "SELECT COUNT(*) as totalMalitlit FROM bg_malitlit";
-$sqlMalusak = "SELECT COUNT(*) as totalMalusak FROM bg_malusak";
-$sqlMarketArea = "SELECT COUNT(*) as totalMarketArea FROM bg_marketarea";
-$sqlPooc = "SELECT COUNT(*) as totalPooc FROM bg_pooc";
-$sqlPulongSantaCruz = "SELECT COUNT(*) as totalPulongSantaCruz FROM bg_pulongsantacruz";
-$sqlSantoDomingo = "SELECT COUNT(*) as totalSantoDomingo FROM bg_santodomingo";
-$sqlSinalhan = "SELECT COUNT(*) as totalSinalhan FROM bg_sinalhan";
-$sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
-
-    // Execute queries
-    $resultAplaya = $conn->query($sqlAplaya);
-    $resultBalibago = $conn->query($sqlBalibago);
-    $resultCaingin = $conn->query($sqlCaingin);
-    $resultDila = $conn->query($sqlDila);
-    $resultDita = $conn->query($sqlDita);
-    $resultDonJose = $conn->query($sqlDonJose);
-    $resultIbaba = $conn->query($sqlIbaba);
-    $resultKanluran = $conn->query($sqlKanluran);
-    $resultLabas = $conn->query($sqlLabas);
-    $resultMacabling = $conn->query($sqlMacabling);
-    $resultMalitlit = $conn->query($sqlMalitlit);
-    $resultMalusak = $conn->query($sqlMalusak);
-    $resultMarketArea = $conn->query($sqlMarketArea);
-    $resultPooc = $conn->query($sqlPooc);
-    $resultPulongSantaCruz = $conn->query($sqlPulongSantaCruz);
-    $resultSantoDomingo = $conn->query($sqlSantoDomingo);
-    $resultSinalhan = $conn->query($sqlSinalhan);
-    $resultTagapo = $conn->query($sqlTagapo);
-
-    // Fetch results
-    $totalAplaya = $resultAplaya->fetch_assoc()['totalAplaya'];
-    $totalBalibago = $resultBalibago->fetch_assoc()['totalBalibago'];
-    $totalCaingin = $resultCaingin->fetch_assoc()['totalCaingin'];
-    $totalDila = $resultDila->fetch_assoc()['totalDila'];
-    $totalDita = $resultDita->fetch_assoc()['totalDita'];
-    $totalDonJose = $resultDonJose->fetch_assoc()['totalDonJose'];
-    $totalIbaba = $resultIbaba->fetch_assoc()['totalIbaba'];
-    $totalKanluran = $resultKanluran->fetch_assoc()['totalKanluran'];
-    $totalLabas = $resultLabas->fetch_assoc()['totalLabas'];
-    $totalMacabling = $resultMacabling->fetch_assoc()['totalMacabling'];
-    $totalMalitlit = $resultMalitlit->fetch_assoc()['totalMalitlit'];
-    $totalMalusak = $resultMalusak->fetch_assoc()['totalMalusak'];
-    $totalMarketArea = $resultMarketArea->fetch_assoc()['totalMarketArea'];
-    $totalPooc = $resultPooc->fetch_assoc()['totalPooc'];
-    $totalPulongSantaCruz = $resultPulongSantaCruz->fetch_assoc()['totalPulongSantaCruz'];
-    $totalSantoDomingo = $resultSantoDomingo->fetch_assoc()['totalSantoDomingo'];
-    $totalSinalhan = $resultSinalhan->fetch_assoc()['totalSinalhan'];
-    $totalTagapo = $resultTagapo->fetch_assoc()['totalTagapo'];
-    
-    // Check if the queries executed successfully and fetch the results
-    if ($resultTotalFormsSubmitted && $resultTotal9to15 && $resultTotal16to20 && 
-        $resultTotal21to59 && $resultTotal60plus && $resultTotalMales && $resultTotalFemales && 
-        $resultTotalHPVRegistrants && $resultTotalFluRegistrants && $resultTotalInfluenzaCount && 
-        $resultTotalVaccines && $resultAplaya && $resultBalibago && $resultCaingin &&
-        $resultDila && $resultDita && $resultDonJose && $resultIbaba &&
-        $resultKanluran && $resultLabas && $resultMacabling && $resultMalitlit &&
-        $resultMalusak && $resultMarketArea && $resultPooc && $resultPulongSantaCruz &&
-        $resultSantoDomingo && $resultSinalhan && $resultTagapo) {
-    
-        $totalFormsSubmitted = $resultTotalFormsSubmitted->fetch_assoc()['totalFormsSubmitted'];
-        $total9to15 = $resultTotal9to15->fetch_assoc()['total9to15'];
-        $total16to20 = $resultTotal16to20->fetch_assoc()['total16to20'];
-        $total21to59 = $resultTotal21to59->fetch_assoc()['total21to59'];
-        $total60plus = $resultTotal60plus->fetch_assoc()['total60plus'];
-        $totalMales = $resultTotalMales->fetch_assoc()['totalMales'];
-        $totalFemales = $resultTotalFemales->fetch_assoc()['totalFemales'];        
-        $totalHPVRegistrants = $resultTotalHPVRegistrants->fetch_assoc()['totalHPVRegistrants'];
-        $totalFluRegistrants = $resultTotalFluRegistrants->fetch_assoc()['totalFluRegistrants'];
-        $totalInfluenzaCount = $resultTotalInfluenzaCount->fetch_assoc()['totalInfluenzaCount'];
-        $totalVaccines = $resultTotalVaccines->fetch_assoc()['totalVaccines'];
-    } else {
-        // Handle query failure
-        die("Error fetching data: " . $conn1->error . " or " . $conn2->error);
-    }
     
     // Closing the connections
     $conn1->close();
@@ -155,10 +39,131 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
 
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta charset="UTF-8">	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"/>
+
     <!-- My CSS -->
     <link rel="stylesheet" href="css/adminstyle.css">
 
     <title>AdminHub</title>
+
+    <script>
+$(document).ready(function() {
+    var baseurl = "api/get_users.php"; // Update this URL to match your API endpoint
+    $.ajax({
+        url: baseurl + "/all",
+        method: 'GET',
+        dataType: 'json',
+        success: function(users) {
+            // Apply the mappings
+            users.forEach(user => {
+                user.gender = getGender(user.gender_id);
+                user.baranggay = getBaranggay(user.baranggay_id);
+                user.vaccineType = getVaccineType(user.vaccine_id);
+                user.doseID = getDoseID(user.vaccine_id, user.dose_id);
+            });
+
+            // Initialize DataTable with the ID of your table
+            $("#example").DataTable({
+                data: users,
+                columns: [
+                    { "data": "id", "title": "ID" },
+                    { "data": "firstname", "title": "First Name" },
+                    { "data": "lastname", "title": "Last Name" },
+                    { "data": "middleinitial", "title": "Middle Initial" },
+                    { "data": "birthdate", "title": "Birthdate" },
+                    { "data": "age", "title": "Age" },
+                    { "data": "gender", "title": "Gender" },
+                    { "data": "baranggay", "title": "Baranggay" },
+                    { "data": "vaccineType", "title": "Vaccine Type" },
+                    { "data": "doseID", "title": "Dose ID" },
+                    { "data": "phonenumber", "title": "Phone Number" },
+                    { "data": "status", "title": "Status" },
+                    { "data": "submitted_at", "title": "Submitted At" },
+                    { 
+                    "data": null,
+                    "title": "Actions",
+                    "render": function (data, type, row) {
+                        return '<a href="view-registrant.php?id=' + row.id + '" class="btn btn-primary">View</a>';
+                    }
+                }
+                ]
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Failed to fetch data:", status, error);
+        }
+    });
+});
+
+// Mapping functions
+function getGender(gender_id) {
+    var gender_mappings = {
+        1: 'Male',
+        2: 'Female'
+    };
+    return gender_mappings[gender_id] || 'Unknown';
+}
+
+function getBaranggay(baranggay_id) {
+    var baranggay_table_mappings = {
+        1: 'bg_aplaya',
+        2: 'bg_balibago',
+        3: 'bg_caingin',
+        4: 'bg_dila',
+        5: 'bg_dita',
+        6: 'bg_donjose',
+        7: 'bg_ibaba',
+        8: 'bg_kanluran',
+        9: 'bg_labas',
+        10: 'bg_macabling',
+        11: 'bg_malitlit',
+        12: 'bg_malusak',
+        13: 'bg_marketarea',
+        14: 'bg_pooc',
+        15: 'bg_pulongsantacruz',
+        16: 'bg_santodomingo',
+        17: 'bg_sinalhan',
+        18: 'bg_tagapo'
+    };
+    return baranggay_table_mappings[baranggay_id] || 'Unknown';
+}
+
+function getVaccineType(vaccine_id) {
+    var vaccine_types = {
+        1: 'HPV',
+        2: 'Flu',
+        3: 'Pneumonia'
+    };
+    return vaccine_types[vaccine_id] || 'Unknown';
+}
+
+function getDoseID(vaccine_id, dose_id) {
+    var vaccine_dose_table_mappings = {
+        1: { // HPV
+            1: 'hpv_dose1',
+            2: 'hpv_dose2',
+            3: 'hpv_dose3'
+        },
+        2: { // Flu
+            1: 'flu_dose1',
+            2: 'flu_dose2',
+            3: 'flu_dose3'
+        },
+        3: { // Pneumonia
+            1: 'pneumonia_dose1',
+            2: 'pneumonia_dose2',
+            3: 'pneumonia_dose3'
+        }
+    };
+    return vaccine_dose_table_mappings[vaccine_id][dose_id] || 'Unknown';
+}
+</script>
+
 </head>
 <body class="light-mode">
 
@@ -243,11 +248,11 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
                 <h1>Dashboard</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="adminindex.php">Dashboard</a>
+                        <a href="admindashboard.php">Dashboard</a>
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="active" href="adminwalkin.php">Walk-In Forms</a>
+                        <a class="active" href="adminvacregistrants.php">Vaccine Registrants</a>
                     </li>
                 </ul>
             </div>
@@ -257,7 +262,7 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
             </a>
         </div>
 
-    <section class="box">
+<section class="box">
     <div class="table-data">
         <div class="order">
             <div class="head">
@@ -265,46 +270,8 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
             </div>
 
             <i class='bx bx-search'></i>
-                <div class="container">
-                    <form method="GET" action="adminwalkin.php" filter="filterUser.php">
-                        <div class="row align-items-center">
-                            <div class="col-md-2">
-                                <input type="date" name="date" value="<?= isset($_GET['date']) ? $_GET['date'] : '' ?>" class="form-control">
-                            </div>
-                            <div class="col-md-2">
-                                <select name="vaccine" class="form-select">
-                                    <option disabled selected>Vaccine Type</option>
-                                    <option value="1" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '1' ? 'selected' : '' ?>>HPV</option>
-                                    <option value="2" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '2' ? 'selected' : '' ?>>Flu</option>
-                                    <option value="3" <?= isset($_GET['vaccine']) && $_GET['vaccine'] == '3' ? 'selected' : '' ?>>Pneumonia</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select name="dose" class="form-select">
-                                    <option disabled selected>Dose</option>
-                                    <option value="1" <?= isset($_GET['dose']) && $_GET['dose'] == '1' ? 'selected' : '' ?>>1st Dose</option>
-                                    <option value="2" <?= isset($_GET['dose']) && $_GET['dose'] == '2' ? 'selected' : '' ?>>2nd Dose</option>
-                                    <option value="3" <?= isset($_GET['dose']) && $_GET['dose'] == '3' ? 'selected' : '' ?>>3rd Dose</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <select name="gender" class="form-select">
-                                    <option disabled selected>Gender</option>
-                                    <option value="1" <?= isset($_GET['gender']) && $_GET['gender'] == '1' ? 'selected' : '' ?>>Male</option>
-                                    <option value="2" <?= isset($_GET['gender']) && $_GET['gender'] == '2' ? 'selected' : '' ?>>Female</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary">Filter</button>
-                            </div>
-                            <div class="col-md-2">
-                                <a href="adminwalkin.php" class="btn btn-danger">Reset</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-            <table class="table table-responsive" id="userstbl">
+            <div class="container">
+            <table id="example" class="display" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -320,46 +287,11 @@ $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
                         <th>Phone Number</th>
                         <th>Status</th>
                         <th>Submitted At</th>
-                        <th>Actions</th> <!-- Add actions column -->
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    // Fetch user data
-                    $users = getUserData($_GET);
-                    if ($users !== false) {
-                        foreach ($users as $user) {
-                            ?>
-                            <tr>
-                                <td><?= htmlspecialchars($user['id']); ?></td>
-                                <td><?= htmlspecialchars($user['firstname']); ?></td>
-                                <td><?= htmlspecialchars($user['lastname']); ?></td>
-                                <td><?= htmlspecialchars($user['middleinitial']); ?></td>
-                                <td><?= htmlspecialchars($user['birthdate']); ?></td>
-                                <td><?= htmlspecialchars($user['age']); ?></td>
-                                <td><?= htmlspecialchars($user['gender']); ?></td>
-                                <td><?= htmlspecialchars($user['baranggay']); ?></td>
-                                <td><?= htmlspecialchars($user['vaccinetype']); ?></td>
-                                <td><?= htmlspecialchars($user['dose_id']); ?></td>
-                                <td><?= htmlspecialchars($user['phonenumber']); ?></td>
-                                <td><?= htmlspecialchars($user['status']); ?></td>
-                                <td><?= htmlspecialchars($user['submitted_at']); ?></td>
-                                <td>
-                                    <a href="api/view-registrant.php?id=<?= htmlspecialchars($user['id']); ?>" class="btn btn-info">View</a>
-                                </td> <!-- Add view action -->
-                            </tr>
-                            <?php
-                        }
-                    } else {
-                        ?>
-                        <tr>
-                            <td colspan="14">No record found.</td>
-                        </tr>
-                        <?php
-                    }
-                    ?>
-                </tbody>
             </table>
+            </div>
         </div>
     </div>
 </section>

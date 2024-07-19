@@ -40,7 +40,7 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
                 $log_sql = "INSERT INTO login_logs (UserID, name, log_date) VALUES ('$userID', '$uname', '$date')";
                 mysqli_query($conn, $log_sql);
 
-                header("Location: adminindex.php");
+                header("Location: admindashboard.php");
                 exit();
             } else {
                 // Log the failed login attempt

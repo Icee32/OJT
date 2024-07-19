@@ -101,19 +101,23 @@ if ($vaccine_check_result->num_rows > 0) {
         exit();
     }
 
-    // Check for existing records of dose 1 and dose 2 before inserting dose 3
-    if ($dose_id == 3) {
-        $dose1_check_sql = "SELECT * FROM users WHERE dose_id = 1 AND vaccine_id = '$vaccine_id' AND FirstName = '$firstname' AND LastName = '$lastname'";
-        $dose2_check_sql = "SELECT * FROM users WHERE dose_id = 2 AND vaccine_id = '$vaccine_id' AND FirstName = '$firstname' AND LastName = '$lastname'";
-        $dose1_check_result = $conn->query($dose1_check_sql);
-        $dose2_check_result = $conn->query($dose2_check_sql);
+// Check for existing records of dose 1 and dose 2 before inserting dose 3
+if ($dose_id == 3) {
+    $dose1_table = $vaccine_dose_table_mappings[$vaccine_id][1];
+    $dose2_table = $vaccine_dose_table_mappings[$vaccine_id][2];
 
-        if ($dose1_check_result->num_rows == 0 || $dose2_check_result->num_rows == 0) {
-            echo json_encode(["status" => "error", "message" => "Cannot insert dose 3 for $firstname $lastname without existing records for dose 1 and dose 2."]);
-            $conn->close();
-            exit();
-        }
+    $dose1_check_sql = "SELECT * FROM $dose1_table WHERE vaccineid = '$vaccine_id' AND FirstName = '$firstname' AND LastName = '$lastname'";
+    $dose2_check_sql = "SELECT * FROM $dose2_table WHERE vaccineid = '$vaccine_id' AND FirstName = '$firstname' AND LastName = '$lastname'";
+    
+    $dose1_check_result = $conn->query($dose1_check_sql);
+    $dose2_check_result = $conn->query($dose2_check_sql);
+
+    if ($dose1_check_result->num_rows == 0 || $dose2_check_result->num_rows == 0) {
+        echo json_encode(["status" => "error", "message" => "Cannot insert dose 3 for $firstname $lastname without existing records for dose 1 and dose 2."]);
+        $conn->close();
+        exit();
     }
+}
 
     // Check if the user already exists in the users table
     $user_check_sql = "SELECT * FROM users WHERE FirstName = '$firstname' AND LastName = '$lastname' AND vaccine_id = '$vaccine_id'";

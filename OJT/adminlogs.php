@@ -106,7 +106,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                         </li>
                         <li><i class='bx bx-chevron-right'></i></li>
                         <li>
-                            <a class="active" href="adminlogss.php">Logs</a>
+                            <a class="active" href="adminlogs.php">Logs</a>
                         </li>
                     </ul>
                 </div>
@@ -137,7 +137,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
   <tbody>
     <?php
       // Connect to the iceuser database (replace with your connection details)
-      $conn = mysqli_connect("localhost", "root", "", "starosalogin");
+      $conn = mysqli_connect("localhost", "root", "", "adminlogin");
 
       // Check connection
       if (!$conn) {

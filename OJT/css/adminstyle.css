@@ -691,6 +691,8 @@ body {
     color: var(--yellow);
 }
 
+
+/*
 #content main .box-info li:nth-child(23) .bx {
     background: var(--light-orange);
     color: var(--orange);
@@ -1015,6 +1017,7 @@ body {
     background: var(--light-orange);
     color: var(--orange);
 }
+*/
 
 #content main .box-info li.highlighted-males .bx {
     background: var(--light-blue);
