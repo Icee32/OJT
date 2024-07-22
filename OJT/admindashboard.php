@@ -260,8 +260,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                 <form method="GET" action="">
                     <select name="year">
                         <option value="ALL" <?php echo isset($_GET['year']) && $_GET['year'] == 'ALL' ? 'selected' : ''; ?>>All Years</option>
-                        <option value="2023" <?php echo isset($_GET['year']) && $_GET['year'] == '2023' ? 'selected' : ''; ?>>2023</option>
-                        <option value="2008" <?php echo isset($_GET['year']) && $_GET['year'] == '2008' ? 'selected' : ''; ?>>2008</option>
+                        <option value="2024" <?php echo isset($_GET['year']) && $_GET['year'] == '2024' ? 'selected' : ''; ?>>2024</option>
+                        <option value="2025" <?php echo isset($_GET['year']) && $_GET['year'] == '2025' ? 'selected' : ''; ?>>2025</option>
+                        <option value="2026" <?php echo isset($_GET['year']) && $_GET['year'] == '20026' ? 'selected' : ''; ?>>2026</option>
+                        <option value="2027" <?php echo isset($_GET['year']) && $_GET['year'] == '20027' ? 'selected' : ''; ?>>2027</option>
+                        <option value="2028" <?php echo isset($_GET['year']) && $_GET['year'] == '20028' ? 'selected' : ''; ?>>2028</option>
                         <!-- Add more years as needed -->
                     </select>
                     <select name="vaccineType">
