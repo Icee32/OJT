@@ -4,29 +4,30 @@ include 'api/db_connection.php'; // Include the database connection
 session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
-
     // Filters
     $year = isset($_GET['year']) ? $_GET['year'] : 'ALL';
     $vaccineType = isset($_GET['vaccineType']) ? $_GET['vaccineType'] : 'ALL';
+    $baranggay = isset($_GET['baranggay']) ? $_GET['baranggay'] : 'ALL';
 
-    $yearFilter = $year !== 'ALL' ? "WHERE YEAR(registration_date) = '$year'" : "";
-    $vaccineFilter = $vaccineType !== 'ALL' ? "AND vaccine_id = '$vaccineType'" : "";
+    $yearFilter = $year !== 'ALL' ? "YEAR(registration_date) = '$year'" : "1=1";
+    $vaccineFilter = $vaccineType !== 'ALL' ? "vaccine_id = '$vaccineType'" : "1=1";
+    $baranggayFilter = $baranggay !== 'ALL' ? "baranggay_id = '$baranggay'" : "1=1";
 
     // Queries to get the data
-    $sqlTotalFormsSubmitted = "SELECT COUNT(*) as totalFormsSubmitted FROM users ";
-    $sqlTotal9to15 = "SELECT COUNT(*) as total9to15 FROM users WHERE age BETWEEN 9 AND 15";
-    $sqlTotal16to20 = "SELECT COUNT(*) as total16to20 FROM users WHERE age BETWEEN 16 AND 20";
-    $sqlTotal21to59 = "SELECT COUNT(*) as total21to59 FROM users WHERE age BETWEEN 21 AND 59";
-    $sqlTotal60plus = "SELECT COUNT(*) as total60plus FROM users Where age >= 60";
-    $sqlTotalMales = "SELECT COUNT(*)  as totalMales FROM users WHERE gender_id = '1'";
-    $sqlTotalFemales = "SELECT COUNT(*) as totalFemales FROM users WHERE gender_id = '2'";
-    $sqlTotalHPVRegistrants = "SELECT COUNT(*) as totalHPVRegistrants FROM users WHERE vaccine_id = '1'";
-    $sqlTotalFluRegistrants = "SELECT COUNT(*) as totalFluRegistrants FROM users WHERE vaccine_id = '2'";
-    $sqlTotalInfluenzaCount = "SELECT COUNT(*) as totalInfluenzaCount FROM users WHERE vaccine_id = '3'";
+    $sqlTotalFormsSubmitted = "SELECT COUNT(*) as totalFormsSubmitted FROM users WHERE $yearFilter AND $vaccineFilter AND $baranggayFilter";
+    $sqlTotal9to15 = "SELECT COUNT(*) as total9to15 FROM users WHERE age BETWEEN 9 AND 15 AND $yearFilter AND $vaccineFilter AND $baranggayFilter";
+    $sqlTotal16to20 = "SELECT COUNT(*) as total16to20 FROM users WHERE age BETWEEN 16 AND 20 AND $yearFilter AND $vaccineFilter AND $baranggayFilter";
+    $sqlTotal21to59 = "SELECT COUNT(*) as total21to59 FROM users WHERE age BETWEEN 21 AND 59 AND $yearFilter AND $vaccineFilter AND $baranggayFilter";
+    $sqlTotal60plus = "SELECT COUNT(*) as total60plus FROM users WHERE age >= 60 AND $yearFilter AND $vaccineFilter AND $baranggayFilter";
+    $sqlTotalMales = "SELECT COUNT(*) as totalMales FROM users WHERE gender_id = '1' AND $yearFilter AND $vaccineFilter AND $baranggayFilter";
+    $sqlTotalFemales = "SELECT COUNT(*) as totalFemales FROM users WHERE gender_id = '2' AND $yearFilter AND $vaccineFilter AND $baranggayFilter";
+    $sqlTotalHPVRegistrants = "SELECT COUNT(*) as totalHPVRegistrants FROM users WHERE vaccine_id = '1' AND $yearFilter AND $baranggayFilter";
+    $sqlTotalFluRegistrants = "SELECT COUNT(*) as totalFluRegistrants FROM users WHERE vaccine_id = '2' AND $yearFilter AND $baranggayFilter";
+    $sqlTotalInfluenzaCount = "SELECT COUNT(*) as totalInfluenzaCount FROM users WHERE vaccine_id = '3' AND $yearFilter AND $baranggayFilter";
     $sqlTotalVaccines = "SELECT 
-        (SELECT COUNT(*) FROM users WHERE vaccine_id = '1') + 
-        (SELECT COUNT(*) FROM users WHERE vaccine_id = '2') + 
-        (SELECT COUNT(*) FROM users WHERE vaccine_id = '3') as totalVaccines";
+        (SELECT COUNT(*) FROM users WHERE vaccine_id = '1' AND $yearFilter AND $baranggayFilter) + 
+        (SELECT COUNT(*) FROM users WHERE vaccine_id = '2' AND $yearFilter AND $baranggayFilter) + 
+        (SELECT COUNT(*) FROM users WHERE vaccine_id = '3' AND $yearFilter AND $baranggayFilter) as totalVaccines";
 
     // Execute queries
     $resultTotalFormsSubmitted = $conn1->query($sqlTotalFormsSubmitted);
@@ -41,88 +42,55 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     $resultTotalInfluenzaCount = $conn1->query($sqlTotalInfluenzaCount);
     $resultTotalVaccines = $conn1->query($sqlTotalVaccines);
 
-    // Queries to get the count of users for each Baranggay
-    $sqlAplaya = "SELECT COUNT(*) as totalAplaya FROM bg_aplaya";
-    $sqlBalibago = "SELECT COUNT(*) as totalBalibago FROM bg_balibago";
-    $sqlCaingin = "SELECT COUNT(*) as totalCaingin FROM bg_caingin";
-    $sqlDila = "SELECT COUNT(*) as totalDila FROM bg_dila";
-    $sqlDita = "SELECT COUNT(*) as totalDita FROM bg_dita";
-    $sqlDonJose = "SELECT COUNT(*) as totalDonJose FROM bg_donjose";
-    $sqlIbaba = "SELECT COUNT(*) as totalIbaba FROM bg_ibaba";
-    $sqlKanluran = "SELECT COUNT(*) as totalKanluran FROM bg_kanluran";
-    $sqlLabas = "SELECT COUNT(*) as totalLabas FROM bg_labas";
-    $sqlMacabling = "SELECT COUNT(*) as totalMacabling FROM bg_macabling";
-    $sqlMalitlit = "SELECT COUNT(*) as totalMalitlit FROM bg_malitlit";
-    $sqlMalusak = "SELECT COUNT(*) as totalMalusak FROM bg_malusak";
-    $sqlMarketArea = "SELECT COUNT(*) as totalMarketArea FROM bg_marketarea";
-    $sqlPooc = "SELECT COUNT(*) as totalPooc FROM bg_pooc";
-    $sqlPulongSantaCruz = "SELECT COUNT(*) as totalPulongSantaCruz FROM bg_pulongsantacruz";
-    $sqlSantoDomingo = "SELECT COUNT(*) as totalSantoDomingo FROM bg_santodomingo";
-    $sqlSinalhan = "SELECT COUNT(*) as totalSinalhan FROM bg_sinalhan";
-    $sqlTagapo = "SELECT COUNT(*) as totalTagapo FROM bg_tagapo";
-
-    // Execute queries
-    $resultAplaya = $conn1->query($sqlAplaya);
-    $resultBalibago = $conn1->query($sqlBalibago);
-    $resultCaingin = $conn1->query($sqlCaingin);
-    $resultDila = $conn1->query($sqlDila);
-    $resultDita = $conn1->query($sqlDita);
-    $resultDonJose = $conn1->query($sqlDonJose);
-    $resultIbaba = $conn1->query($sqlIbaba);
-    $resultKanluran = $conn1->query($sqlKanluran);
-    $resultLabas = $conn1->query($sqlLabas);
-    $resultMacabling = $conn1->query($sqlMacabling);
-    $resultMalitlit = $conn1->query($sqlMalitlit);
-    $resultMalusak = $conn1->query($sqlMalusak);
-    $resultMarketArea = $conn1->query($sqlMarketArea);
-    $resultPooc = $conn1->query($sqlPooc);
-    $resultPulongSantaCruz = $conn1->query($sqlPulongSantaCruz);
-    $resultSantoDomingo = $conn1->query($sqlSantoDomingo);
-    $resultSinalhan = $conn1->query($sqlSinalhan);
-    $resultTagapo = $conn1->query($sqlTagapo);
-
     // Fetch results
-    $totalAplaya = $resultAplaya->fetch_assoc()['totalAplaya'];
-    $totalBalibago = $resultBalibago->fetch_assoc()['totalBalibago'];
-    $totalCaingin = $resultCaingin->fetch_assoc()['totalCaingin'];
-    $totalDila = $resultDila->fetch_assoc()['totalDila'];
-    $totalDita = $resultDita->fetch_assoc()['totalDita'];
-    $totalDonJose = $resultDonJose->fetch_assoc()['totalDonJose'];
-    $totalIbaba = $resultIbaba->fetch_assoc()['totalIbaba'];
-    $totalKanluran = $resultKanluran->fetch_assoc()['totalKanluran'];
-    $totalLabas = $resultLabas->fetch_assoc()['totalLabas'];
-    $totalMacabling = $resultMacabling->fetch_assoc()['totalMacabling'];
-    $totalMalitlit = $resultMalitlit->fetch_assoc()['totalMalitlit'];
-    $totalMalusak = $resultMalusak->fetch_assoc()['totalMalusak'];
-    $totalMarketArea = $resultMarketArea->fetch_assoc()['totalMarketArea'];
-    $totalPooc = $resultPooc->fetch_assoc()['totalPooc'];
-    $totalPulongSantaCruz = $resultPulongSantaCruz->fetch_assoc()['totalPulongSantaCruz'];
-    $totalSantoDomingo = $resultSantoDomingo->fetch_assoc()['totalSantoDomingo'];
-    $totalSinalhan = $resultSinalhan->fetch_assoc()['totalSinalhan'];
-    $totalTagapo = $resultTagapo->fetch_assoc()['totalTagapo'];
-    
-    // Check if the queries executed successfully and fetch the results
-    if ($resultTotalFormsSubmitted && $resultTotal9to15 && $resultTotal16to20 && 
-        $resultTotal21to59 && $resultTotal60plus && $resultTotalMales && $resultTotalFemales && 
-        $resultTotalHPVRegistrants && $resultTotalFluRegistrants && $resultTotalInfluenzaCount && $resultTotalVaccines &&
-        $resultAplaya && $resultBalibago && $resultCaingin && $resultDila && $resultDita &&
-        $resultDonJose && $resultIbaba && $resultKanluran && $resultLabas && $resultMacabling &&
-        $resultMalitlit && $resultMalusak && $resultMarketArea && $resultPooc &&
-        $resultPulongSantaCruz && $resultSantoDomingo && $resultSinalhan && $resultTagapo) {
-            
-        $totalFormsSubmitted = $resultTotalFormsSubmitted->fetch_assoc()['totalFormsSubmitted'];
-        $total9to15 = $resultTotal9to15->fetch_assoc()['total9to15'];
-        $total16to20 = $resultTotal16to20->fetch_assoc()['total16to20'];
-        $total21to59 = $resultTotal21to59->fetch_assoc()['total21to59'];
-        $total60plus = $resultTotal60plus->fetch_assoc()['total60plus'];
-        $totalMales = $resultTotalMales->fetch_assoc()['totalMales'];
-        $totalFemales = $resultTotalFemales->fetch_assoc()['totalFemales'];
-        $totalHPVRegistrants = $resultTotalHPVRegistrants->fetch_assoc()['totalHPVRegistrants'];
-        $totalFluRegistrants = $resultTotalFluRegistrants->fetch_assoc()['totalFluRegistrants'];
-        $totalInfluenzaCount = $resultTotalInfluenzaCount->fetch_assoc()['totalInfluenzaCount'];
-        $totalVaccines = $resultTotalVaccines->fetch_assoc()['totalVaccines'];
+    $totalFormsSubmitted = $resultTotalFormsSubmitted->fetch_assoc()['totalFormsSubmitted'];
+    $total9to15 = $resultTotal9to15->fetch_assoc()['total9to15'];
+    $total16to20 = $resultTotal16to20->fetch_assoc()['total16to20'];
+    $total21to59 = $resultTotal21to59->fetch_assoc()['total21to59'];
+    $total60plus = $resultTotal60plus->fetch_assoc()['total60plus'];
+    $totalMales = $resultTotalMales->fetch_assoc()['totalMales'];
+    $totalFemales = $resultTotalFemales->fetch_assoc()['totalFemales'];
+    $totalHPVRegistrants = $resultTotalHPVRegistrants->fetch_assoc()['totalHPVRegistrants'];
+    $totalFluRegistrants = $resultTotalFluRegistrants->fetch_assoc()['totalFluRegistrants'];
+    $totalInfluenzaCount = $resultTotalInfluenzaCount->fetch_assoc()['totalInfluenzaCount'];
+    $totalVaccines = $resultTotalVaccines->fetch_assoc()['totalVaccines'];
+
+    // Queries to get the count of users for each baranggay
+    $baranggayTables = [
+        'Aplaya' => 'bg_aplaya',
+        'Balibago' => 'bg_balibago',
+        'Caingin' => 'bg_caingin',
+        'Dila' => 'bg_dila',
+        'Dita' => 'bg_dita',
+        'Don Jose' => 'bg_donjose',
+        'Ibaba' => 'bg_ibaba',
+        'Kanluran' => 'bg_kanluran',
+        'Labas' => 'bg_labas',
+        'Macabling' => 'bg_macabling',
+        'Malitlit' => 'bg_malitlit',
+        'Malusak' => 'bg_malusak',
+        'Market Area' => 'bg_marketarea',
+        'Pooc' => 'bg_pooc',
+        'Pulong Santa Cruz' => 'bg_pulongsantacruz',
+        'Santo Domingo' => 'bg_santodomingo',
+        'Sinalhan' => 'bg_sinalhan',
+        'Tagapo' => 'bg_tagapo'
+    ];
+
+    $baranggaySQL = "";
+    if ($baranggay !== 'ALL') {
+        $baranggaySQL = "SELECT COUNT(*) as total, '$baranggay' as baranggay FROM " . $baranggayTables[$baranggay] . " WHERE $yearFilter AND $vaccineFilter";
     } else {
-        echo "Error executing one or more queries.";
+        foreach ($baranggayTables as $baranggayName => $table) {
+            $baranggaySQL .= "SELECT COUNT(*) as total, '$baranggayName' as baranggay FROM $table WHERE $yearFilter AND $vaccineFilter UNION ALL ";
+        }
+        $baranggaySQL = rtrim($baranggaySQL, " UNION ALL ");
+    }
+
+    $resultbaranggays = $conn1->query($baranggaySQL);
+    $baranggayData = [];
+    while ($row = $resultbaranggays->fetch_assoc()) {
+        $baranggayData[$row['baranggay']] = $row['total'];
     }
 ?>
 
@@ -205,13 +173,65 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             </form>
             <input type="checkbox" id="switch-mode" hidden>
             <label for="switch-mode" class="switch-mode"></label>
-            <a href="#" class="notification">
-                <i class='bx bxs-bell'></i>
-                <span class="num">8</span>
-            </a>
-            <a href="#" class="profile">
-                <img src="img/people.png">
-            </a>
+            <a href="#" id="notification" class="notification">
+        <i class='bx bxs-bell'></i>
+        <span class="num" id="badge">8</span>
+    </a>
+
+    <!-- Notification Content -->
+    <div id="notification-content" class="notification-content">
+        <ul id="notification-list">
+            <!-- Notifications will be dynamically inserted here -->
+        </ul>
+    </div>
+
+    <!-- Profile -->
+    <a href="#" class="profile">
+        <img src="img/people.png" alt="Profile Image">
+    </a>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch and display the number of new registrants
+            fetch('api/fetch_count.php')
+                .then(response => response.text())
+                .then(count => {
+                    const badge = document.getElementById('badge');
+                    badge.textContent = count;
+                    if (parseInt(count) === 0) {
+                        badge.style.display = 'none';
+                    } else {
+                        badge.style.display = 'block';
+                    }
+                });
+
+            // Fetch and display the latest registrants' details
+            fetch('api/user-get.php')
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('notification-list');
+                    list.innerHTML = ''; // Clear previous notifications
+
+                    if (data.length === 0) {
+                        list.innerHTML = '<li>No new notifications</li>';
+                    } else {
+                        data.forEach(registrant => {
+                            const li = document.createElement('li');
+                            li.textContent = `${registrant.firstname} ${registrant.lastname} has registered for ${registrant.vaccinetype} ${registrant.dose_id} dose`;
+                            list.appendChild(li);
+                        });
+                    }
+                });
+
+            // Toggle notification content visibility
+            document.getElementById('notification').addEventListener('click', function(event) {
+                event.preventDefault();
+                const content = document.getElementById('notification-content');
+                content.style.display = content.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+    </script>
         </nav>
         <!-- NAVBAR -->
 
@@ -236,240 +256,144 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             </a>
         </div>
 
-        <div class="filters">
-            <form method="GET" action="">
-                <select name="year">
-                    <option value="ALL">All Years</option>
-                    <option value="2023">2023</option>
-                    <option value="2008">2008</option>
-                    <!-- Add more years as needed -->
-                </select>
-                <select name="vaccineType">
-                    <option value="ALL">All Vaccine Types</option>
-                    <option value="1">HPV</option>
-                    <option value="2">Flu</option>
-                    <option value="3">Influenza</option>
-                    <!-- Add more vaccine types as needed -->
-                </select>
-                <button type="submit">Filter</button>
-            </form>
-        </div>
+            <div class="filters">
+                <form method="GET" action="">
+                    <select name="year">
+                        <option value="ALL" <?php echo isset($_GET['year']) && $_GET['year'] == 'ALL' ? 'selected' : ''; ?>>All Years</option>
+                        <option value="2023" <?php echo isset($_GET['year']) && $_GET['year'] == '2023' ? 'selected' : ''; ?>>2023</option>
+                        <option value="2008" <?php echo isset($_GET['year']) && $_GET['year'] == '2008' ? 'selected' : ''; ?>>2008</option>
+                        <!-- Add more years as needed -->
+                    </select>
+                    <select name="vaccineType">
+                        <option value="ALL" <?php echo isset($_GET['vaccineType']) && $_GET['vaccineType'] == 'ALL' ? 'selected' : ''; ?>>All Vaccine Types</option>
+                        <option value="1" <?php echo isset($_GET['vaccineType']) && $_GET['vaccineType'] == '1' ? 'selected' : ''; ?>>HPV</option>
+                        <option value="2" <?php echo isset($_GET['vaccineType']) && $_GET['vaccineType'] == '2' ? 'selected' : ''; ?>>Flu</option>
+                        <option value="3" <?php echo isset($_GET['vaccineType']) && $_GET['vaccineType'] == '3' ? 'selected' : ''; ?>>Influenza</option>
+                        <!-- Add more vaccine types as needed -->
+                    </select>
+                    <select name="baranggay">
+                        <option value="ALL" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'ALL' ? 'selected' : ''; ?>>All baranggays</option>
+                        <option value="Aplaya" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Aplaya' ? 'selected' : ''; ?>>Aplaya</option>
+                        <option value="Balibago" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Balibago' ? 'selected' : ''; ?>>Balibago</option>
+                        <option value="Caingin" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Caingin' ? 'selected' : ''; ?>>Caingin</option>
+                        <option value="Dila" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Dila' ? 'selected' : ''; ?>>Dila</option>
+                        <option value="Dita" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Dita' ? 'selected' : ''; ?>>Dita</option>
+                        <option value="Don Jose" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Don Jose' ? 'selected' : ''; ?>>Don Jose</option>
+                        <option value="Ibaba" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Ibaba' ? 'selected' : ''; ?>>Ibaba</option>
+                        <option value="Kanluran" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Kanluran' ? 'selected' : ''; ?>>Kanluran</option>
+                        <option value="Labas" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Labas' ? 'selected' : ''; ?>>Labas</option>
+                        <option value="Macabling" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Macabling' ? 'selected' : ''; ?>>Macabling</option>
+                        <option value="Malitlit" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Malitlit' ? 'selected' : ''; ?>>Malitlit</option>
+                        <option value="Malusak" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Malusak' ? 'selected' : ''; ?>>Malusak</option>
+                        <option value="Market Area" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Market Area' ? 'selected' : ''; ?>>Market Area</option>
+                        <option value="Pooc" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Pooc' ? 'selected' : ''; ?>>Pooc</option>
+                        <option value="Pulong Santa Cruz" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Pulong Santa Cruz' ? 'selected' : ''; ?>>Pulong Santa Cruz</option>
+                        <option value="Santo Domingo" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Santo Domingo' ? 'selected' : ''; ?>>Santo Domingo</option>
+                        <option value="Sinalhan" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Sinalhan' ? 'selected' : ''; ?>>Sinalhan</option>
+                        <option value="Tagapo" <?php echo isset($_GET['baranggay']) && $_GET['baranggay'] == 'Tagapo' ? 'selected' : ''; ?>>Tagapo</option>
+                    </select>
+                    <button type="submit">Filter</button>
+                </form>
+            </div>
 
-        <ul class="box-info gender">
-            <li class = "Total-Forms">
-                <i class='bx bxs-calendar-check'></i>
-                <span class="text">
-                    <h3><?php echo $totalFormsSubmitted; ?></h3>
-                    <p>Total Forms</p>
-                </span>
-            </li>
-            <li class="highlighted-males">
-                <i class='bx bxs-group'></i>
-                <span class="text">
-                    <h3><?php echo $totalMales; ?></h3>
-                    <p>Total Males</p>
-                </span>
-            </li>
-            <li class="highlighted-females">
-                <i class='bx bxs-group'></i>
-                <span class="text">
-                    <h3><?php echo $totalFemales; ?></h3>
-                    <p>Total Females</p>
-                </span>
-            </li>
-        </ul>    
+            <ul class="box-info gender">
+    <li class="Total-Forms">
+        <i class='bx bxs-calendar-check'></i>
+        <span class="text">
+            <h3><?php echo $totalFormsSubmitted; ?></h3>
+            <p>Total Forms</p>
+        </span>
+    </li>
+    <li class="highlighted-males">
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3><?php echo $totalMales; ?></h3>
+            <p>Total Males</p>
+        </span>
+    </li>
+    <li class="highlighted-females">
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3><?php echo $totalFemales; ?></h3>
+            <p>Total Females</p>
+        </span>
+    </li>
+</ul>    
 
-        <ul class="box-info ages">
-            <li>
-                <i class='bx bxs-group'></i>
-                <span class="text">
-                    <h3><?php echo $total9to15; ?></h3>
-                    <p>Total 9-15 Year Olds</p>
-                </span>
-            </li>
-            <li>
-                <i class='bx bxs-group'></i>
-                <span class="text">
-                    <h3><?php echo $total16to20; ?></h3>
-                    <p>Total 16-20 Year Olds</p>
-                </span>
-            </li>
-            <li>
-                <i class='bx bxs-group'></i>
-                <span class="text">
-                    <h3><?php echo $total21to59; ?></h3>
-                    <p>Total 21-59 Year Olds</p>
-                </span>
-            </li>
-            <li>
-                <i class='bx bxs-group'></i>
-                <span class="text">
-                    <h3><?php echo $total60plus; ?></h3>
-                    <p>Total 60+ Year Olds</p>
-                </span>
-            </li>
-        </ul>
+<ul class="box-info ages">
+    <li>
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3><?php echo $total9to15; ?></h3>
+            <p>Total 9-15 Year Olds</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3><?php echo $total16to20; ?></h3>
+            <p>Total 16-20 Year Olds</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3><?php echo $total21to59; ?></h3>
+            <p>Total 21-59 Year Olds</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-group'></i>
+        <span class="text">
+            <h3><?php echo $total60plus; ?></h3>
+            <p>Total 60+ Year Olds</p>
+        </span>
+    </li>
+</ul>
 
-        <ul class="box-info totals">
-            <li>
-                <i class='bx bxs-virus'></i>
-                <span class="text">
-                    <h3><?php echo $totalVaccines; ?></h3>
-                    <p>Total Vaccines (HPV, FLU, INFLUENZA)</p>
-                </span>
-            </li>
-            <li>
-                <i class='bx bxs-virus'></i>
-                <span class="text">
-                    <h3><?php echo $totalHPVRegistrants; ?></h3>
-                    <p>Total HPV Registrants</p>
-                </span>
-            </li>
-            <li>
-                <i class='bx bxs-virus'></i>
-                <span class="text">
-                    <h3><?php echo $totalFluRegistrants; ?></h3>
-                    <p>Total Flu Registrants</p>
-                </span>
-            </li>
-            <li>
-                <i class='bx bxs-virus'></i>
-                <span class="text">
-                    <h3><?php echo $totalInfluenzaCount; ?></h3>
-                    <p>Total Influenza Count</p>
-                </span>
-            </li>
-        </ul>
+<ul class="box-info totals">
+    <li>
+        <i class='bx bxs-virus'></i>
+        <span class="text">
+            <h3><?php echo $totalVaccines; ?></h3>
+            <p>Total Vaccines (HPV, FLU, INFLUENZA)</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-virus'></i>
+        <span class="text">
+            <h3><?php echo $totalHPVRegistrants; ?></h3>
+            <p>Total HPV Registrants</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-virus'></i>
+        <span class="text">
+            <h3><?php echo $totalFluRegistrants; ?></h3>
+            <p>Total Flu Registrants</p>
+        </span>
+    </li>
+    <li>
+        <i class='bx bxs-virus'></i>
+        <span class="text">
+            <h3><?php echo $totalInfluenzaCount; ?></h3>
+            <p>Total Influenza Count</p>
+        </span>
+    </li>
+</ul>
 
-        <ul class="box-info baranggays">
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalAplaya; ?></h3>
-                <p>Aplaya Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalBalibago; ?></h3>
-                <p>Balibago Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalCaingin; ?></h3>
-                <p>Caingin Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalDila; ?></h3>
-                <p>Dila Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalDita; ?></h3>
-                <p>Dita Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalDonJose; ?></h3>
-                <p>Don Jose Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalIbaba; ?></h3>
-                <p>Ibaba Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalKanluran; ?></h3>
-                <p>Kanluran Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalLabas; ?></h3>
-                <p>Labas Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalMacabling; ?></h3>
-                <p>Macabling Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalMalitlit; ?></h3>
-                <p>Malitlit Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalMalusak; ?></h3>
-                <p>Malusak Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalMarketArea; ?></h3>
-                <p>Market Area Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalPooc; ?></h3>
-                <p>Pooc Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalPulongSantaCruz; ?></h3>
-                <p>Pulong Santa Cruz Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalSantoDomingo; ?></h3>
-                <p>Santo Domingo Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalSinalhan; ?></h3>
-                <p>Sinalhan Registrants Registrants</p>
-            </span>
-        </li>
-        <li>
-            <i class='bx bxs-map'></i>
-            <span class="text">
-                <h3><?php echo $totalTagapo; ?></h3>
-                <p>Tagapo Registrants</p>
-            </span>
-        </li>
-    </ul>
-    </ul>
+<ul class="box-info baranggays">
+    <?php foreach ($baranggayData as $baranggayName => $total): ?>
+    <li>
+        <i class='bx bxs-map'></i>
+        <span class="text">
+            <h3><?php echo $total; ?></h3>
+            <p><?php echo $baranggayName; ?> Registrants</p>
+        </span>
+    </li>
+    <?php endforeach; ?>
+</ul>
+                -->
             <!--FOOTER-->
         </main>
         <!-- MAIN -->
@@ -477,6 +401,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     <!-- CONTENT -->
 
     <!-- javascript -->
+
+
     <script src="js/script.js"></script>Z
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

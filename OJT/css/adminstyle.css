@@ -1248,102 +1248,153 @@ body {
 }
 
 
-/* Filter Box Styles */
+/* Filter Form Styles */
 
-.filter-row {
-    margin-bottom: 20px;
+.filters {
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.filter-input,
-.filter-select {
-    border: 1px solid var(--dark-grey);
-    border-radius: 20px;
-    padding: 10px;
-    background: var(--light);
-    color: var(--dark);
-    font-family: var(--poppins);
-    font-size: 16px;
-}
-
-.filter-input:focus,
-.filter-select:focus {
-    border-color: var(--red);
-    outline: none;
-}
-
-.filter-buttons {
-    margin-top: 10px;
-}
-
-.filter-buttons .btn {
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-}
-
-.filter-buttons .btn-primary {
-    background: var(--red);
-    color: var(--light);
-}
-
-.filter-buttons .btn-danger {
-    background: var(--dark-grey);
-    color: var(--light);
-}
-
-.filter-buttons .btn:hover {
-    opacity: 0.9;
-}
-
-.container {
-    margin-top: 20px;
-}
-
-.form-control,
-.form-select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--dark-grey);
-    border-radius: 4px;
-    background-color: var(--light);
-    color: var(--dark);
-}
-
-.btn {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    font-weight: 500;
-    font-family: var(--poppins);
-    border: none;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: var(--red);
-    color: var(--light);
-}
-
-.btn-danger {
-    background-color: var(--dark-grey);
-    color: var(--light);
-    margin-left: 10px;
-    /* Adjust margin as needed */
-}
-
-.btn-primary:hover,
-.btn-danger:hover {
-    opacity: 0.8;
-}
-
-.row {
+.filters form {
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
     align-items: center;
 }
 
-.col-md-2 {
-    flex: 0 0 16.66667%;
-    max-width: 16.66667%;
-    padding: 8px;
+.filters select,
+.filters button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.filters select {
+    background-color: #f9f9f9;
+    min-width: 150px;
+}
+
+.filters button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.filters button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Box Info Styles */
+
+.box-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.box-info li {
+    list-style: none;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    flex: 1 1 calc(25% - 40px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s;
+}
+
+.box-info li:hover {
+    transform: translateY(-5px);
+}
+
+.box-info .text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.box-info h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.box-info p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.box-info i {
+    font-size: 30px;
+    color: #007bff;
+}
+
+
+/*gg*/
+
+.notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.notification .num {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    display: none;
+    /* Hidden by default */
+}
+
+.notification-content {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.notification-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-content ul li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.notification-content ul li:last-child {
+    border-bottom: none;
 }

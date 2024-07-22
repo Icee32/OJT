@@ -1,60 +1,29 @@
 <?php
-
-// Database connection (replace with your credentials)
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "adminstarosaform";  // Corrected database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    echo json_encode(["status" => "error", "message" => "Connection failed: " . $conn->connect_error]);
-    exit();
-}
+include 'db_connection.php'; // Include the database connection
 
 function getUserData($filters = []) {
-    global $conn;
+    global $conn1; // Use the connection variable from db_connection.php
 
     $whereClauses = [];
-
-    if (isset($filters['date'])) {
-        $date = mysqli_real_escape_string($conn, $filters['date']);
-        $whereClauses[] = "DATE(submitted_at) = '$date'";
-    }
-
-    if (isset($filters['vaccine'])) {
-        $vaccine = (int) $filters['vaccine'];
-        $whereClauses[] = "vaccine_id = $vaccine";
-    }
-
-    if (isset($filters['dose'])) {
-        $dose = (int) $filters['dose'];
-        $whereClauses[] = "dose_id = $dose";
-    }
-
-    if (isset($filters['gender'])) {
-        $gender = (int) $filters['gender'];
-        $whereClauses[] = "gender_id = $gender";
-    }
+    $whereClauses[] = "submitted_at >= NOW() - INTERVAL 1 DAY"; // Example filter to get recent data
 
     $whereSql = "";
     if (count($whereClauses) > 0) {
         $whereSql = "WHERE " . implode(" AND ", $whereClauses);
     }
 
-    $sql = "SELECT users.id, users.FirstName as firstname, users.LastName as lastname, users.middleinitial, users.birthdate, users.Age as age, 
+    $sql = "SELECT users.id, users.firstname, users.lastname, users.middleinitial, users.birthdate, users.age, 
             users.phonenumber, gender.gendername as gender, baranggay.baranggayname as baranggay, users.baranggay_id, 
             vaccine.vaccinename as vaccinetype, users.vaccine_id, users.dose_id, users.status, users.submitted_at
             FROM users
             LEFT JOIN tblgender AS gender ON users.gender_id = gender.genderid
             LEFT JOIN tblbaranggay AS baranggay ON users.baranggay_id = baranggay.baranggayid
             LEFT JOIN tblvaccine AS vaccine ON users.vaccine_id = vaccine.vaccineid
-            $whereSql";
+            $whereSql
+            ORDER BY users.submitted_at DESC
+            LIMIT 5"; // Adjust limit as needed
 
-    $result = $conn->query($sql);
+    $result = $conn1->query($sql);
 
     if ($result->num_rows > 0) {
         $users = [];
@@ -66,4 +35,10 @@ function getUserData($filters = []) {
         return false;
     }
 }
+
+// Fetch data without filters for demonstration
+$data = getUserData();
+echo json_encode($data);
+
+mysqli_close($conn1); // Close the database connection
 ?>
