@@ -140,7 +140,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
                     <i class='bx bxs-message-dots'></i>
                     <span class="text">Logs</span>
                 </a>
-            </li>
+            </li>                          
         </ul>
         <ul class="side-menu">
             <li>
